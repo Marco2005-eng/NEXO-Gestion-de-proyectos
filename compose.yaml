@@ -1,0 +1,32 @@
+services:
+  app:
+    image: nexo:local
+    build:
+      context: .
+      target: runner
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-}
+    env_file: .env.local
+    ports:
+      - "${NEXO_BIND_HOST:-127.0.0.1}:${NEXO_PORT:-3000}:3000"
+    restart: unless-stopped
+    init: true
+
+  desarrollo:
+    profiles: [desarrollo]
+    build:
+      context: .
+      target: development
+    env_file: .env.local
+    ports:
+      - "${NEXO_BIND_HOST:-127.0.0.1}:${NEXO_PORT:-3000}:3000"
+    volumes:
+      - .:/app
+      - nexo_dependencies:/app/node_modules
+      - nexo_development_cache:/app/.next
+    init: true
+
+volumes:
+  nexo_dependencies:
+  nexo_development_cache:

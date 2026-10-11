@@ -1,0 +1,19 @@
+node_modules
+.next
+.npm-cache
+.git
+.openai
+.env*
+!.env.example
+tmp
+dist
+coverage
+*.tsbuildinfo
+*.log
+*.tar
+*.tar.gz
+docs
+tests
+ejemplos
+supabase
+# Se conservan los archivos fuente necesarios para compilar; Supabase sigue siendo remoto.

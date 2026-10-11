@@ -1,0 +1,3 @@
+-- Datos de referencia obligatorios se crean en la migración inicial.
+-- Este archivo queda reservado para datos de demostración en desarrollo.
+-- No agregue usuarios reales ni ejecute seeds de demostración en producción.

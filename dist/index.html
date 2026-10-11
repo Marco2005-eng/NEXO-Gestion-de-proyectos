@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Prototipo de Nexo, plataforma para gestionar proyectos, tareas, materiales y aprobaciones." />
+    <title>Nexo | Gestión de proyectos</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23112945'/%3E%3Cpath d='M18 44V20h7l14 15V20h7v24h-7L25 29v15z' fill='%233dd6bd'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span><strong>Nexo</strong><small>Gestión de proyectos</small></span>
+        </div>
+
+        <nav class="nav-list">
+          <p class="nav-label">Espacio de trabajo</p>
+          <button class="nav-item active" data-view="overview"><span aria-hidden="true">⌂</span>Resumen</button>
+          <button class="nav-item" data-view="projects"><span aria-hidden="true">▦</span>Proyectos</button>
+          <button class="nav-item" data-view="tasks"><span aria-hidden="true">✓</span>Tareas <em>12</em></button>
+          <button class="nav-item" data-view="materials"><span aria-hidden="true">◇</span>Materiales</button>
+          <button class="nav-item" data-view="approvals"><span aria-hidden="true">◎</span>Aprobaciones <em>5</em></button>
+          <button class="nav-item" data-view="reports"><span aria-hidden="true">▥</span>Reportes</button>
+          <p class="nav-label">Organización</p>
+          <button class="nav-item" data-view="team"><span aria-hidden="true">♙</span>Equipo</button>
+          <button class="nav-item" data-view="permissions"><span aria-hidden="true">⌘</span>Roles y permisos</button>
+          <button class="nav-item" data-view="settings"><span aria-hidden="true">⚙</span>Configuración</button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="capacity-head"><span>Plan universitario</span><strong>68%</strong></div>
+          <div class="capacity-track"><span></span></div>
+          <small>6.8 GB de 10 GB utilizados</small>
+        </div>
+      </aside>
+
+      <div class="main-area">
+        <header class="topbar">
+          <button class="icon-button menu-button" id="menuButton" aria-label="Abrir menú">☰</button>
+          <label class="search-box">
+            <span aria-hidden="true">⌕</span>
+            <input id="globalSearch" type="search" placeholder="Buscar proyectos, tareas o personas" />
+            <kbd>Ctrl K</kbd>
+          </label>
+          <div class="top-actions">
+            <button class="icon-button notification-button" aria-label="Notificaciones">♢<span></span></button>
+            <div class="profile">
+              <span class="avatar" id="profileAvatar">AM</span>
+              <span class="profile-copy"><strong id="profileName">Ana Mendoza</strong><small id="profileRole">Administradora</small></span>
+              <span aria-hidden="true">⌄</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="access-preview-bar" id="accessPreviewBar" hidden>
+          <span>Vista de acceso: <strong id="previewUserName">Usuario</strong></span>
+          <small>Solo se muestran sus módulos y proyectos asignados.</small>
+          <button id="exitPreview">Volver a vista de administrador</button>
+        </div>
+
+        <main class="content">
+          <section class="view active" id="view-overview" data-title="Resumen general">
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">Lunes, 20 de septiembre</p>
+                <h1>Resumen general</h1>
+                <p>Supervisa el trabajo del equipo y atiende lo que requiere una decisión.</p>
+              </div>
+              <div class="heading-actions">
+                <button class="button secondary" data-action="material">Solicitar material</button>
+                <button class="button primary" data-action="task"><span>＋</span>Nueva tarea</button>
+              </div>
+            </div>
+
+            <div class="attention-strip">
+              <div class="attention-icon">!</div>
+              <div><strong>Hay 5 solicitudes pendientes de aprobación</strong><span>La solicitud MAT-024 vence hoy y requiere tu revisión.</span></div>
+              <button class="text-button" data-go="approvals">Revisar solicitudes <span>→</span></button>
+            </div>
+
+            <div class="metrics-grid">
+              <article class="metric-card"><div class="metric-top"><span class="metric-icon indigo">▦</span><span class="trend positive">+2 este mes</span></div><strong>8</strong><p>Proyectos en cartera</p><small>3 próximos a finalizar</small></article>
+              <article class="metric-card"><div class="metric-top"><span class="metric-icon cyan">✓</span><span class="trend positive">+8%</span></div><strong>64%</strong><p>Avance promedio</p><small>Sobre 148 tareas</small></article>
+              <article class="metric-card"><div class="metric-top"><span class="metric-icon amber">◷</span><span class="trend warning">Requiere atención</span></div><strong>12</strong><p>Tareas atrasadas</p><small>4 de prioridad alta</small></article>
+              <article class="metric-card"><div class="metric-top"><span class="metric-icon violet">◇</span><span class="trend neutral">Este mes</span></div><strong>S/ 8,420</strong><p>Material utilizado</p><small>72% del presupuesto</small></article>
+            </div>
+
+            <div class="dashboard-grid">
+              <article class="panel progress-panel">
+                <div class="panel-head"><div><h2>Avance de proyectos</h2><p>Proyectos activos con mayor actividad</p></div><button class="more-button" aria-label="Más opciones">•••</button></div>
+                <div class="project-progress-list">
+                  <div class="project-progress" data-project-name="Implementación ERP" data-searchable="Implementación ERP tecnología Carlos Ruiz"><span class="project-code blue">ER</span><div class="project-info"><div><strong>Implementación ERP</strong><span>82%</span></div><small>Tecnología · Carlos Ruiz</small><div class="progress-track"><span style="width:82%"></span></div></div></div>
+                  <div class="project-progress" data-project-name="Renovación de laboratorio" data-searchable="Renovación de laboratorio infraestructura Lucía Vega"><span class="project-code teal">RL</span><div class="project-info"><div><strong>Renovación de laboratorio</strong><span>68%</span></div><small>Infraestructura · Lucía Vega</small><div class="progress-track"><span style="width:68%"></span></div></div></div>
+                  <div class="project-progress" data-project-name="Campaña de admisión" data-searchable="Campaña de admisión marketing Diego Torres"><span class="project-code orange">CA</span><div class="project-info"><div><strong>Campaña de admisión</strong><span>54%</span></div><small>Marketing · Diego Torres</small><div class="progress-track"><span style="width:54%"></span></div></div></div>
+                  <div class="project-progress" data-project-name="Biblioteca digital" data-searchable="Biblioteca digital académica María Soto"><span class="project-code purple">BD</span><div class="project-info"><div><strong>Biblioteca digital</strong><span>41%</span></div><small>Académica · María Soto</small><div class="progress-track"><span style="width:41%"></span></div></div></div>
+                </div>
+                <button class="panel-link" data-go="projects">Ver todos los proyectos →</button>
+              </article>
+
+              <article class="panel workload-panel">
+                <div class="panel-head"><div><h2>Carga del equipo</h2><p>Tareas activas por responsable</p></div><select aria-label="Periodo"><option>Esta semana</option><option>Este mes</option></select></div>
+                <div class="workload-chart" aria-label="Gráfico de carga de trabajo">
+                  <div class="chart-row"><span>CR</span><strong>Carlos</strong><div><i style="width:92%"></i></div><b>11</b></div>
+                  <div class="chart-row"><span>LV</span><strong>Lucía</strong><div><i style="width:75%"></i></div><b>9</b></div>
+                  <div class="chart-row"><span>DT</span><strong>Diego</strong><div><i style="width:58%"></i></div><b>7</b></div>
+                  <div class="chart-row"><span>MS</span><strong>María</strong><div><i style="width:42%"></i></div><b>5</b></div>
+                  <div class="chart-row"><span>JP</span><strong>José</strong><div><i style="width:25%"></i></div><b>3</b></div>
+                </div>
+                <div class="legend"><span><i class="legend-good"></i>Normal</span><span><i class="legend-high"></i>Carga alta</span></div>
+              </article>
+            </div>
+
+            <article class="panel table-panel">
+              <div class="panel-head"><div><h2>Tareas prioritarias</h2><p>Actividades que vencen en los próximos días</p></div><button class="button tertiary" data-go="tasks">Ver todas</button></div>
+              <div class="table-scroll"><table><thead><tr><th>Tarea</th><th>Proyecto</th><th>Responsable</th><th>Vencimiento</th><th>Estado</th></tr></thead><tbody>
+                <tr data-project-name="Implementación ERP" data-searchable="Configurar módulo de inventario ERP Carlos"><td><span class="priority-dot red"></span><strong>Configurar módulo de inventario</strong></td><td>Implementación ERP</td><td><span class="person"><i>CR</i>Carlos Ruiz</span></td><td class="overdue">Hoy, 17:00</td><td><span class="status review">En revisión</span></td></tr>
+                <tr data-project-name="Renovación de laboratorio" data-searchable="Validar cotización de equipos laboratorio Lucía"><td><span class="priority-dot amber"></span><strong>Validar cotización de equipos</strong></td><td>Renovación de laboratorio</td><td><span class="person"><i>LV</i>Lucía Vega</span></td><td>Mañana</td><td><span class="status progress">En progreso</span></td></tr>
+                <tr data-project-name="Campaña de admisión" data-searchable="Aprobar piezas para redes Campaña Diego"><td><span class="priority-dot amber"></span><strong>Aprobar piezas para redes</strong></td><td>Campaña de admisión</td><td><span class="person"><i>DT</i>Diego Torres</span></td><td>23 sep.</td><td><span class="status pending">Pendiente</span></td></tr>
+              </tbody></table></div>
+            </article>
+          </section>
+
+          <section class="view" id="view-projects" data-title="Proyectos">
+            <div class="page-heading"><div><p class="eyebrow">Portafolio</p><h1>Proyectos</h1><p>Consulta responsables, presupuesto, avance y fechas clave.</p></div><button class="button primary" data-action="project">＋ Nuevo proyecto</button></div>
+            <div class="filter-row"><button class="filter active" data-project-filter="Todos">Todos <span>8</span></button><button class="filter" data-project-filter="En curso">En curso <span>5</span></button><button class="filter" data-project-filter="En riesgo">En riesgo <span>2</span></button><button class="filter" data-project-filter="Finalizado">Finalizados <span>1</span></button></div>
+            <div class="project-card-grid" id="projectGrid"></div>
+          </section>
+
+          <section class="view" id="view-tasks" data-title="Tareas">
+            <div class="page-heading"><div><p class="eyebrow">Trabajo del equipo</p><h1>Tareas</h1><p>Organiza actividades por estado y responsable.</p></div><button class="button primary" data-action="task">＋ Nueva tarea</button></div>
+            <div class="toolbar"><div class="segmented"><button class="active">Tablero</button><button>Lista</button><button>Cronograma</button></div><select id="taskProjectFilter"><option value="all">Todos los proyectos</option><option>Implementación ERP</option><option>Renovación de laboratorio</option></select></div>
+            <div class="kanban" id="kanbanBoard"></div>
+          </section>
+
+          <section class="view" id="view-materials" data-title="Materiales">
+            <div class="page-heading"><div><p class="eyebrow">Recursos y almacén</p><h1>Materiales</h1><p>Consulta existencias y sigue cada solicitud desde el pedido hasta su cierre.</p></div><div class="heading-actions"><button class="button secondary" data-action="stock">＋ Registrar material</button><button class="button primary" data-action="material">＋ Nueva solicitud</button></div></div>
+
+            <div class="material-flow" aria-label="Flujo de una solicitud de material">
+              <div class="flow-step done"><span>1</span><strong>Solicitud</strong><small>Proyecto y responsable</small></div><i>→</i>
+              <div class="flow-step active"><span>2</span><strong>Aprobación</strong><small>Stock, costo y necesidad</small></div><i>→</i>
+              <div class="flow-step"><span>3</span><strong>Reserva</strong><small>Separación de existencias</small></div><i>→</i>
+              <div class="flow-step"><span>4</span><strong>Entrega</strong><small>Responsable y evidencia</small></div><i>→</i>
+              <div class="flow-step"><span>5</span><strong>Uso o devolución</strong><small>Consumo real</small></div><i>→</i>
+              <div class="flow-step"><span>6</span><strong>Cierre</strong><small>Trazabilidad completa</small></div>
+            </div>
+
+            <div class="metrics-grid compact"><article class="metric-card"><p>Materiales registrados</p><strong>126</strong><small>18 categorías</small></article><article class="metric-card"><p>Unidades disponibles</p><strong>1,842</strong><small>264 reservadas</small></article><article class="metric-card"><p>Solicitudes activas</p><strong>14</strong><small>5 pendientes de aprobación</small></article><article class="metric-card"><p>Stock bajo</p><strong class="danger-text">9</strong><small>Requieren reposición</small></article></div>
+
+            <div class="material-tabs" role="tablist" aria-label="Secciones de materiales">
+              <button class="active" data-material-tab="inventory">Inventario <span>126</span></button>
+              <button data-material-tab="requests">Solicitudes <span>14</span></button>
+              <button data-material-tab="movements">Movimientos</button>
+            </div>
+
+            <div class="material-tab-content active" id="material-tab-inventory">
+              <div class="materials-dashboard-grid">
+                <article class="panel table-panel"><div class="panel-head"><div><h2>Inventario disponible</h2><p>Existencias físicas, reservas y ubicación</p></div><input class="small-search" type="search" placeholder="Buscar material" data-table-search="materialsTable" /></div><div class="table-scroll"><table id="materialsTable"><thead><tr><th>Material</th><th>Categoría</th><th>Disponible</th><th>Reservado</th><th>Ubicación</th><th>Estado</th></tr></thead><tbody>
+                  <tr><td><strong>Laptop Lenovo ThinkPad</strong><small class="cell-note">EQ-001 · unidad</small></td><td>Equipos</td><td><strong>12</strong></td><td>4</td><td>Almacén A-02</td><td><span class="status success">Disponible</span></td></tr>
+                  <tr><td><strong>Cable de red CAT6</strong><small class="cell-note">IN-018 · metro</small></td><td>Instalación</td><td><strong>28</strong></td><td>20</td><td>Almacén B-11</td><td><span class="status warning">Stock bajo</span></td></tr>
+                  <tr><td><strong>Papel A4 75 g</strong><small class="cell-note">OF-004 · millar</small></td><td>Oficina</td><td><strong>45</strong></td><td>6</td><td>Almacén C-03</td><td><span class="status success">Disponible</span></td></tr>
+                  <tr><td><strong>Proyector multimedia</strong><small class="cell-note">EQ-009 · unidad</small></td><td>Equipos</td><td><strong>0</strong></td><td>3</td><td>En préstamo</td><td><span class="status danger">Agotado</span></td></tr>
+                  <tr><td><strong>Pintura látex blanca</strong><small class="cell-note">MN-021 · galón</small></td><td>Mantenimiento</td><td><strong>18</strong></td><td>8</td><td>Almacén B-06</td><td><span class="status success">Disponible</span></td></tr>
+                </tbody></table></div></article>
+
+                <aside class="panel recent-materials"><div class="panel-head"><div><h2>Agregados recientemente</h2><p>Últimos ingresos al catálogo</p></div><button class="text-button" data-material-tab-link="movements">Ver movimientos</button></div>
+                  <div class="recent-item"><span class="recent-icon equipment">▣</span><div><strong>Router Wi-Fi 6</strong><small>EQ-034 · 8 unidades</small><time>Hoy, 09:42 · José Pérez</time></div></div>
+                  <div class="recent-item"><span class="recent-icon maintenance">◆</span><div><strong>Pintura látex blanca</strong><small>MN-021 · 24 galones</small><time>Ayer, 16:18 · Rosa Díaz</time></div></div>
+                  <div class="recent-item"><span class="recent-icon office">▤</span><div><strong>Tóner HP 58A</strong><small>OF-029 · 12 unidades</small><time>18 sep., 11:30 · José Pérez</time></div></div>
+                  <div class="recent-item"><span class="recent-icon installation">⌁</span><div><strong>Canaleta PVC 40×20</strong><small>IN-031 · 80 metros</small><time>17 sep., 15:04 · Rosa Díaz</time></div></div>
+                </aside>
+              </div>
+            </div>
+
+            <div class="material-tab-content" id="material-tab-requests">
+              <div class="request-tracking-layout">
+                <article class="panel table-panel"><div class="panel-head"><div><h2>Seguimiento de solicitudes</h2><p>Quién solicitó, para qué proyecto y en qué estado se encuentra</p></div><div class="request-filters"><select id="materialStatusFilter"><option value="all">Todos los estados</option><option>Pendiente</option><option>Aprobada</option><option>Entregada</option><option>Cerrada</option></select><input class="small-search" type="search" placeholder="Buscar solicitante" data-table-search="requestsTable" /></div></div><div class="table-scroll"><table id="requestsTable"><thead><tr><th>Solicitud</th><th>Solicitante</th><th>Proyecto</th><th>Material</th><th>Fecha</th><th>Estado</th><th></th></tr></thead><tbody>
+                  <tr data-project-name="Renovación de laboratorio" data-request-status="Pendiente"><td><strong>MAT-024</strong><small class="cell-note">Prioridad alta</small></td><td><span class="person"><i>LV</i><span><strong>Lucía Vega</strong><small>Infraestructura</small></span></span></td><td>Renovación de laboratorio</td><td>12 cables CAT6</td><td>Hoy</td><td><span class="status pending">Pendiente</span></td><td><button class="row-action" data-material-request="MAT-024">Ver seguimiento</button></td></tr>
+                  <tr data-project-name="Implementación ERP" data-request-status="Aprobada"><td><strong>MAT-023</strong><small class="cell-note">Reserva confirmada</small></td><td><span class="person"><i>CR</i><span><strong>Carlos Ruiz</strong><small>Tecnología</small></span></span></td><td>Implementación ERP</td><td>3 licencias</td><td>Hoy</td><td><span class="status review">Aprobada</span></td><td><button class="row-action" data-material-request="MAT-023">Ver seguimiento</button></td></tr>
+                  <tr data-project-name="Campaña de admisión" data-request-status="Entregada"><td><strong>MAT-019</strong><small class="cell-note">Uso pendiente</small></td><td><span class="person"><i>DT</i><span><strong>Diego Torres</strong><small>Marketing</small></span></span></td><td>Campaña de admisión</td><td>4 millares A4</td><td>18 sep.</td><td><span class="status progress">Entregada</span></td><td><button class="row-action" data-material-request="MAT-019">Ver seguimiento</button></td></tr>
+                  <tr data-project-name="Biblioteca digital" data-request-status="Cerrada"><td><strong>MAT-014</strong><small class="cell-note">Consumo validado</small></td><td><span class="person"><i>MS</i><span><strong>María Soto</strong><small>Académica</small></span></span></td><td>Biblioteca digital</td><td>1 proyector</td><td>12 sep.</td><td><span class="status success">Cerrada</span></td><td><button class="row-action" data-material-request="MAT-014">Ver seguimiento</button></td></tr>
+                </tbody></table></div></article>
+                <aside class="panel request-trace" id="materialRequestTrace"><div class="empty-state compact-empty"><span>◎</span><h2>Selecciona una solicitud</h2><p>Verás responsables, fechas, decisiones, entrega y uso reportado.</p></div></aside>
+              </div>
+            </div>
+
+            <div class="material-tab-content" id="material-tab-movements">
+              <article class="panel table-panel"><div class="panel-head"><div><h2>Historial de movimientos</h2><p>Cada entrada, reserva, entrega, devolución y ajuste queda registrado</p></div><input class="small-search" type="search" placeholder="Buscar movimiento" data-table-search="movementsTable" /></div><div class="table-scroll"><table id="movementsTable"><thead><tr><th>Fecha</th><th>Tipo</th><th>Material</th><th>Cantidad</th><th>Proyecto o motivo</th><th>Responsable</th><th>Saldo</th></tr></thead><tbody>
+                <tr><td>Hoy, 09:42</td><td><span class="movement in">Entrada</span></td><td><strong>Router Wi-Fi 6</strong></td><td class="positive-amount">+8 un.</td><td>Compra OC-184</td><td>José Pérez</td><td>8</td></tr>
+                <tr><td>Hoy, 08:55</td><td><span class="movement reserve">Reserva</span></td><td><strong>Cable CAT6</strong></td><td>-12 m</td><td>MAT-024 · Laboratorio</td><td>Lucía Vega</td><td>28</td></tr>
+                <tr><td>Ayer, 16:18</td><td><span class="movement in">Entrada</span></td><td><strong>Pintura látex blanca</strong></td><td class="positive-amount">+24 gal.</td><td>Compra OC-181</td><td>Rosa Díaz</td><td>24</td></tr>
+                <tr><td>18 sep., 14:25</td><td><span class="movement out">Entrega</span></td><td><strong>Papel A4 75 g</strong></td><td>-4 mill.</td><td>MAT-019 · Campaña</td><td>José Pérez</td><td>45</td></tr>
+                <tr><td>17 sep., 10:10</td><td><span class="movement return">Devolución</span></td><td><strong>Proyector multimedia</strong></td><td class="positive-amount">+1 un.</td><td>MAT-014 · Biblioteca</td><td>María Soto</td><td>1</td></tr>
+              </tbody></table></div></article>
+            </div>
+          </section>
+
+          <section class="view" id="view-approvals" data-title="Aprobaciones">
+            <div class="page-heading"><div><p class="eyebrow">Bandeja de decisiones</p><h1>Aprobaciones</h1><p>Revisa solicitudes pendientes y conserva la trazabilidad.</p></div></div>
+            <div class="approval-layout"><div class="approval-list" id="approvalList"></div><aside class="approval-detail" id="approvalDetail"><div class="empty-state"><span>◎</span><h2>Selecciona una solicitud</h2><p>Aquí aparecerán los datos, documentos y decisiones disponibles.</p></div></aside></div>
+          </section>
+
+          <section class="view" id="view-reports" data-title="Reportes">
+            <div class="page-heading"><div><p class="eyebrow">Análisis</p><h1>Reportes</h1><p>Indicadores de avance, cumplimiento y uso de recursos.</p></div><button class="button secondary" id="exportButton">⇩ Exportar reporte</button></div>
+            <div class="report-grid"><article class="panel wide-chart"><div class="panel-head"><div><h2>Cumplimiento mensual</h2><p>Tareas terminadas dentro y fuera del plazo</p></div><select><option>Últimos 6 meses</option></select></div><div class="bar-chart"><div class="y-axis"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span></div><div class="bars"><div><i style="height:54%"></i><span>Abr</span></div><div><i style="height:68%"></i><span>May</span></div><div><i style="height:62%"></i><span>Jun</span></div><div><i style="height:78%"></i><span>Jul</span></div><div><i style="height:85%"></i><span>Ago</span></div><div><i style="height:72%"></i><span>Sep</span></div></div></div></article><article class="panel"><div class="panel-head"><div><h2>Estado de tareas</h2><p>Distribución actual</p></div></div><div class="donut-wrap"><div class="donut"><span>148<small>tareas</small></span></div><ul><li><i class="done"></i>Completadas <strong>72</strong></li><li><i class="doing"></i>En progreso <strong>41</strong></li><li><i class="waiting"></i>Pendientes <strong>23</strong></li><li><i class="late"></i>Atrasadas <strong>12</strong></li></ul></div></article></div>
+          </section>
+
+          <section class="view" id="view-team" data-title="Equipo y roles">
+            <div class="page-heading"><div><p class="eyebrow">Organización</p><h1>Equipo</h1><p>Administra integrantes, áreas y asignaciones.</p></div><button class="button primary" data-action="invite">＋ Invitar integrante</button></div>
+            <article class="panel table-panel"><div class="panel-head"><div><h2>Integrantes</h2><p>24 usuarios activos en 6 áreas</p></div><input class="small-search" type="search" placeholder="Buscar integrante" data-table-search="teamTable" /></div><div class="table-scroll"><table id="teamTable"><thead><tr><th>Integrante</th><th>Área</th><th>Rol</th><th>Proyectos</th><th>Estado</th></tr></thead><tbody><tr><td><span class="person"><i>AM</i><span><strong>Ana Mendoza</strong><small>ana@nexo.edu.pe</small></span></span></td><td>Dirección</td><td>Jefa de proyecto</td><td>4</td><td><span class="status success">Activo</span></td></tr><tr><td><span class="person"><i>CR</i><span><strong>Carlos Ruiz</strong><small>carlos@nexo.edu.pe</small></span></span></td><td>Tecnología</td><td>Responsable</td><td>3</td><td><span class="status success">Activo</span></td></tr><tr><td><span class="person"><i>LV</i><span><strong>Lucía Vega</strong><small>lucia@nexo.edu.pe</small></span></span></td><td>Infraestructura</td><td>Jefa de área</td><td>2</td><td><span class="status success">Activo</span></td></tr><tr><td><span class="person"><i>JP</i><span><strong>José Pérez</strong><small>jose@nexo.edu.pe</small></span></span></td><td>Logística</td><td>Materiales</td><td>2</td><td><span class="status pending">Invitado</span></td></tr></tbody></table></div></article>
+          </section>
+
+          <section class="view" id="view-permissions" data-title="Roles y permisos">
+            <div class="page-heading"><div><p class="eyebrow">Control de acceso</p><h1>Roles y permisos</h1><p>Define qué funciones puede utilizar cada persona y en qué proyectos.</p></div><button class="button primary" data-action="access">＋ Asignar acceso</button></div>
+
+            <div class="access-rule">
+              <span class="access-rule-icon">⌘</span>
+              <div><strong>Acceso por función y alcance</strong><p>El rol determina las acciones permitidas; la asignación determina los proyectos cuyos datos puede ver.</p></div>
+              <div class="access-formula"><span>Rol</span><b>＋</b><span>Funciones</span><b>＋</b><span>Proyectos</span><b>＝</b><strong>Acceso efectivo</strong></div>
+            </div>
+
+            <div class="permission-summary">
+              <article><span class="metric-icon indigo">♙</span><div><strong>7</strong><small>Roles configurados</small></div></article>
+              <article><span class="metric-icon cyan">✓</span><div><strong>24</strong><small>Usuarios con acceso</small></div></article>
+              <article><span class="metric-icon amber">◎</span><div><strong>3</strong><small>Asignaciones por revisar</small></div></article>
+            </div>
+
+            <article class="panel access-simulator">
+              <div><span class="simulator-label">SIMULADOR DE ACCESO</span><h2>Comprueba lo que verá cada usuario</h2><p>La simulación oculta módulos y proyectos que no estén incluidos en su asignación.</p></div>
+              <label>Usuario<select id="accessUserSelect"><option value="lucia">Lucía Vega · Jefa de área</option><option value="carlos">Carlos Ruiz · Responsable</option><option value="jose">José Pérez · Materiales</option><option value="auditor">Rosa Flores · Auditora</option></select></label>
+              <button class="button primary" id="startAccessPreview">Probar su vista</button>
+            </article>
+
+            <div class="permissions-grid">
+              <article class="panel table-panel">
+                <div class="panel-head"><div><h2>Asignaciones actuales</h2><p>Rol, funciones y proyectos visibles por usuario</p></div><input class="small-search" type="search" placeholder="Buscar usuario" data-table-search="assignmentsTable" /></div>
+                <div class="table-scroll"><table id="assignmentsTable"><thead><tr><th>Usuario</th><th>Rol</th><th>Funciones habilitadas</th><th>Alcance de proyectos</th><th></th></tr></thead><tbody>
+                  <tr><td><span class="person"><i>LV</i><span><strong>Lucía Vega</strong><small>Infraestructura</small></span></span></td><td>Jefa de área</td><td><div class="scope-tags"><span>Proyectos</span><span>Tareas</span><span>Materiales</span><span>Aprobar</span></div></td><td><strong>2 proyectos</strong><small class="cell-note">Renovación de laboratorio +1</small></td><td><button class="row-action" data-action="access">Editar</button></td></tr>
+                  <tr><td><span class="person"><i>CR</i><span><strong>Carlos Ruiz</strong><small>Tecnología</small></span></span></td><td>Responsable</td><td><div class="scope-tags"><span>Proyectos</span><span>Tareas</span><span>Reportes</span></div></td><td><strong>3 proyectos</strong><small class="cell-note">Implementación ERP +2</small></td><td><button class="row-action" data-action="access">Editar</button></td></tr>
+                  <tr><td><span class="person"><i>JP</i><span><strong>José Pérez</strong><small>Logística</small></span></span></td><td>Gestor de materiales</td><td><div class="scope-tags"><span>Materiales</span><span>Solicitudes</span></div></td><td><strong>2 proyectos</strong><small class="cell-note">Implementación ERP +1</small></td><td><button class="row-action" data-action="access">Editar</button></td></tr>
+                  <tr><td><span class="person"><i>RF</i><span><strong>Rosa Flores</strong><small>Auditoría</small></span></span></td><td>Auditora</td><td><div class="scope-tags"><span>Solo lectura</span><span>Reportes</span></div></td><td><strong>Todos los proyectos</strong><small class="cell-note">Sin permisos de edición</small></td><td><button class="row-action" data-action="access">Editar</button></td></tr>
+                </tbody></table></div>
+              </article>
+
+              <article class="panel roles-panel">
+                <div class="panel-head"><div><h2>Roles del sistema</h2><p>Conjunto reutilizable de permisos</p></div><button class="button tertiary" data-toast="Nuevo rol preparado">＋ Nuevo rol</button></div>
+                <div class="role-list">
+                  <button class="role-item active"><span class="role-symbol admin">A</span><span><strong>Administrador</strong><small>Todos los permisos</small></span><b>2</b></button>
+                  <button class="role-item"><span class="role-symbol manager">JP</span><span><strong>Jefe de proyecto</strong><small>Gestión completa de sus proyectos</small></span><b>4</b></button>
+                  <button class="role-item"><span class="role-symbol lead">JA</span><span><strong>Jefe de área</strong><small>Área y proyectos asignados</small></span><b>5</b></button>
+                  <button class="role-item"><span class="role-symbol approver">AP</span><span><strong>Aprobador</strong><small>Solicitudes asignadas</small></span><b>3</b></button>
+                  <button class="role-item"><span class="role-symbol member">MI</span><span><strong>Miembro</strong><small>Tareas y avances propios</small></span><b>9</b></button>
+                  <button class="role-item"><span class="role-symbol material">MA</span><span><strong>Gestor de materiales</strong><small>Inventario, entrega y devolución</small></span><b>1</b></button>
+                  <button class="role-item"><span class="role-symbol audit">AU</span><span><strong>Auditor</strong><small>Consulta sin edición</small></span><b>1</b></button>
+                </div>
+              </article>
+            </div>
+
+            <article class="panel permission-matrix">
+              <div class="panel-head"><div><h2>Matriz de permisos</h2><p>Ejemplo de acciones permitidas por rol</p></div><span class="status success">Principio de mínimo acceso</span></div>
+              <div class="table-scroll"><table><thead><tr><th>Acción</th><th>Administrador</th><th>Jefe de proyecto</th><th>Jefe de área</th><th>Aprobador</th><th>Miembro</th><th>Materiales</th><th>Auditor</th></tr></thead><tbody>
+                <tr><td><strong>Ver proyecto asignado</strong></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                <tr><td><strong>Editar proyecto</strong></td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr><td><strong>Asignar tareas</strong></td><td>✓</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr><td><strong>Aprobar solicitudes</strong></td><td>✓</td><td>Opcional</td><td>Opcional</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr><td><strong>Gestionar materiales</strong></td><td>✓</td><td>—</td><td>—</td><td>—</td><td>Solicitar</td><td>✓</td><td>Ver</td></tr>
+                <tr><td><strong>Ver auditoría</strong></td><td>✓</td><td>Su proyecto</td><td>Su área</td><td>—</td><td>—</td><td>—</td><td>✓</td></tr>
+              </tbody></table></div>
+            </article>
+          </section>
+
+          <section class="view" id="view-settings" data-title="Configuración">
+            <div class="page-heading"><div><p class="eyebrow">Administración</p><h1>Configuración</h1><p>Preferencias generales de la organización.</p></div></div>
+            <div class="settings-grid"><nav class="settings-nav"><button class="active">General</button><button>Áreas</button><button>Roles y permisos</button><button>Notificaciones</button><button>Integraciones</button></nav><article class="panel settings-form"><h2>Datos de la organización</h2><p>Información utilizada en reportes y correos del sistema.</p><label>Nombre de la organización<input value="Universidad Nexo" /></label><div class="form-grid"><label>Zona horaria<select><option>America/Lima (UTC-5)</option></select></label><label>Moneda<select><option>Soles peruanos (PEN)</option></select></label></div><label>Correo para notificaciones<input type="email" value="proyectos@nexo.edu.pe" /></label><div class="form-footer"><button class="button primary" data-toast="Configuración guardada">Guardar cambios</button></div></article></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="modalBackdrop" hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal-close" id="modalClose" aria-label="Cerrar">×</button>
+        <div id="modalContent"></div>
+      </section>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="js/app.js"></script>
+  </body>
+</html>

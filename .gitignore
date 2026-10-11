@@ -1,0 +1,12 @@
+node_modules/
+.npm-cache/
+.next/
+.env*
+!.env.example
+*.tsbuildinfo
+coverage/
+.openai/
+tmp/
+*.log
+*.tar
+*.tar.gz

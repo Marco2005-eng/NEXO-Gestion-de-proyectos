@@ -1,0 +1,16 @@
+'use client';
+import {useState} from 'react';
+import {hasGrant,type Row,type WorkspaceData} from '@/features/workspace/domain/types';
+export function TaskAssignmentFields({data,projectId,row}:{data:WorkspaceData;projectId:string;row?:Row}){
+ const assigned=data.assignees.filter(a=>a.task_id===row?.id);
+ const [query,setQuery]=useState('');const [responsible,setResponsible]=useState(String(assigned.find(a=>a.assignment_type==='responsible')?.member_id??''));
+ const [reviewer,setReviewer]=useState(String(assigned.find(a=>a.assignment_type==='reviewer')?.member_id??''));
+ const ids=new Set(data.projectMembers.filter(pm=>pm.project_id===projectId&&!pm.left_at).map(pm=>pm.member_id));
+ const team=data.members.filter(m=>ids.has(m.id)&&m.status==='active');
+ const name=(m:Row)=>String(data.profiles.find(p=>p.id===m.user_id)?.display_name??data.registeredUsers.find(u=>u.id===m.id)?.display_name??'Usuario');
+ const matches=team.filter(m=>m.id===responsible||name(m).toLocaleLowerCase('es').includes(query.toLocaleLowerCase('es')));
+ const project=data.projects.find(p=>p.id===projectId);
+ const canAssign=(p:Row)=>hasGrant(data.grants,row?'task.manage':'task.create',String(p.organization_id),String(p.id),(row?.area_id??p.area_id) as string|null);
+ const supervisors=team.filter(m=>m.id!==responsible&&data.projectMembers.some(pm=>pm.project_id===projectId&&pm.member_id===m.id&&pm.is_project_manager&&!pm.left_at));
+ return <section className="request-section full"><div className="request-section-heading"><span className="request-step">✓</span><div><h3>Responsable y revisión</h3><p>Asigna la tarea a un integrante del proyecto.</p></div></div><div className="request-context-grid"><label>Buscar colaborador<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Escribe su nombre…"/></label><label>Responsable <span className="required">*</span><select name="responsible_member_id" required value={responsible} onChange={e=>{setResponsible(e.target.value);if(reviewer===e.target.value)setReviewer('');}}><option value="">Seleccionar colaborador</option>{matches.map(m=><option key={String(m.id)} value={String(m.id)}>{name(m)}{m.job_title?' · '+m.job_title:''}</option>)}</select></label></div>{!team.length&&<p className="form-error">Agrega colaboradores al equipo de este proyecto antes de asignar la tarea.</p>}{query&&matches.length===0&&<p className="form-help">No se encontraron colaboradores con ese nombre.</p>}<div className="notice" style={{marginTop:16}}><strong>Supervisores según su rol</strong><span>Los jefes y cargos con permiso de supervisión de este proyecto pueden revisar sus avances. El colaborador no necesita elegir a quién enviar.</span>{supervisors.length>0&&<span>Jefes del equipo: {supervisors.map(name).join(', ')}.</span>}</div><label>Revisor adicional <span className="request-optional">Opcional</span><select name="reviewer_member_id" value={reviewer} onChange={e=>setReviewer(e.target.value)}><option value="">Usar supervisores del proyecto</option>{team.filter(m=>m.id!==responsible&&!assigned.some(a=>a.member_id===m.id&&a.assignment_type==='collaborator')).map(m=><option key={String(m.id)} value={String(m.id)}>{name(m)}</option>)}</select></label>{project&&!canAssign(project)&&<p className="form-error">No tienes permiso de asignación para este proyecto.</p>}</section>;
+}
