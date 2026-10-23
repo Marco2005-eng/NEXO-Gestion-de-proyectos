@@ -4,7 +4,7 @@ import { requireUser } from '@/features/auth/application/session';
 import { loadWorkspace } from '../infrastructure/load-workspace';
 import { hasGrant } from '../domain/types';
 import {taskDueAt,saveError} from '../domain/task-edit';
-export type MutationResult = { ok: boolean; message: string };
+export type MutationResult = { ok: boolean; message: string; data?: Record<string, unknown> };
 function text(payload: Record<string, unknown>, key: string, required = false) {
   const value = String(payload[key] ?? '').trim();
   if (required && !value) throw new Error('Completa los campos obligatorios.');
@@ -29,7 +29,19 @@ export async function mutateWorkspace(kind: string, payload: Record<string, unkn
       if(error)return {ok:false,message:['PGRST202','42883'].includes(error.code)?'Ejecuta supabase/15_materiales_excel_solicitudes.sql antes de importar.':error.message};
       revalidatePath('/','layout');return {ok:true,message:'Materiales importados. Existencias y precios actualizados.'};
     }
-    if (['request.update','request.receive','request.create','request.submit','request.decide','request.reserve','request.deliver'].includes(kind)) {
+    if (['request.deliver','request.receive','request.return','request.usage','request.cancel','request.close'].includes(kind)) {
+      const command = kind.slice('request.'.length);
+      const flowPayload = { ...payload, request_id: payload.request_id ?? payload.id };
+      const { data, error } = await client.rpc('nexo_material_flow', { p_command: command, p_payload: flowPayload });
+      if (error) {
+        if (error.code === 'PGRST202' || error.code === '42883') return { ok: false, message: 'Ejecuta supabase/22_materiales_flujo_completo.sql para habilitar entregas, recepciones, devoluciones y consumo.' };
+        return { ok: false, message: error.message };
+      }
+      revalidatePath('/', 'layout');
+      const messages: Record<string, string> = { deliver: 'Entrega registrada. Comparte el código con el solicitante.', receive: 'Recepción confirmada.', return: 'Devolución registrada.', usage: 'Consumo reportado.', cancel: 'Solicitud cancelada y reservas liberadas.', close: 'Solicitud cerrada.' };
+      return { ok: true, message: messages[command] ?? 'Operación registrada correctamente.', data: (data ?? {}) as Record<string, unknown> };
+    }
+    if (['request.update','request.create','request.submit','request.decide','request.reserve'].includes(kind)) {
       const { error } = await client.rpc('nexo_material_command', { p_command: kind, p_payload: payload });
       if (error) {
         if (error.code === 'PGRST202' || error.code === '42883') return { ok: false, message: 'Para habilitar este flujo ejecuta supabase/05_flujos_interfaces.sql en SQL Editor.' };

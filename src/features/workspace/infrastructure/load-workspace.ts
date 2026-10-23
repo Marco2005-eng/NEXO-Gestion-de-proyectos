@@ -3,7 +3,7 @@ import { requireUser } from '@/features/auth/application/session';
 import { getSupabaseConfig } from '@/lib/supabase/config';
 import type { WorkspaceData, Row, Grant } from '../domain/types';
 export async function loadWorkspace(): Promise<WorkspaceData> {
-  const empty: WorkspaceData = { connected: false, userId: '', userName: 'Visitante', grants: [], organizations: [], projects: [], tasks: [], materials: [], inventory: [], requests: [], requestItems: [], history: [], approvals: [], documents: [], diagrams: [], areas: [], warehouses: [], members: [], profiles: [], assignees: [], summaries: [], roles: [], notifications: [], errors: [], projectMembers: [], registeredUsers: [], registrationEnabled: Boolean(process.env.SUPABASE_SECRET_KEY) };
+  const empty: WorkspaceData = { connected: false, userId: '', userName: 'Visitante', grants: [], organizations: [], projects: [], tasks: [], materials: [], inventory: [], requests: [], requestItems: [], history: [], deliveries: [], deliveryItems: [], returns: [], returnItems: [], usageReports: [], usageReportItems: [], requestBalances: [], approvals: [], documents: [], diagrams: [], areas: [], warehouses: [], members: [], profiles: [], assignees: [], summaries: [], roles: [], notifications: [], errors: [], projectMembers: [], registeredUsers: [], registrationEnabled: Boolean(process.env.SUPABASE_SECRET_KEY) };
   if (!getSupabaseConfig()) return empty;
   const { client, user } = await requireUser();
   const platform=await client.rpc('nexo_is_platform_admin');
@@ -18,6 +18,13 @@ export async function loadWorkspace(): Promise<WorkspaceData> {
     requests: ['material_requests', '*'],
     requestItems: ['material_request_items', 'id,request_id,material_id,preferred_warehouse_id,quantity_requested,quantity_approved,quantity_reserved,quantity_delivered,unit_cost'],
     history: ['material_request_status_history', '*'],
+    deliveries: ['material_deliveries', 'id,organization_id,request_id,warehouse_id,delivered_by_member_id,received_by_member_id,delivery_number,delivered_at,notes,evidence_file_id,created_at,confirmed_at,confirmed_by_member_id,reception_evidence_file_id,requires_confirmation_code'],
+    deliveryItems: ['material_delivery_items', '*'],
+    returns: ['material_returns', '*'],
+    returnItems: ['material_return_items', '*'],
+    usageReports: ['material_usage_reports', '*'],
+    usageReportItems: ['material_usage_report_items', '*'],
+    requestBalances: ['material_request_item_balances', '*'],
     approvals: ['approval_instances', 'id,organization_id,subject_id,subject_type,project_id,status_code,requested_by_member_id,created_at'],
     documents: ['documents', 'id,organization_id,project_id,file_id,title,document_type,version,created_at'],
     diagrams: ['activity_diagrams', 'id,project_id,name,source,format,version,created_at'],
@@ -35,6 +42,9 @@ export async function loadWorkspace(): Promise<WorkspaceData> {
   await Promise.all(Object.entries(queries).map(async ([key, [table, columns]]) => {
     let query = client.from(table).select(columns).limit(500);
     if (table==='notifications') query=query.order('created_at',{ascending:false}).limit(100);
+    if (table==='material_deliveries') query=query.order('delivered_at',{ascending:false}).limit(500);
+    if (table==='material_returns') query=query.order('returned_at',{ascending:false}).limit(500);
+    if (table==='material_usage_reports') query=query.order('reported_at',{ascending:false}).limit(500);
     if (['projects','tasks','materials','material_requests','documents','activity_diagrams','areas'].includes(table)) query = query.is('deleted_at', null);
     const completeInventory=['materials','inventory_availability','warehouses'].includes(table);
     if(completeInventory)query=table==='inventory_availability'?query.order('material_id').order('warehouse_id'):query.order('id');

@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nexo · Materiales · Prototipo</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#f5f7fb;--panel:#fff;--ink:#172033;--muted:#667085;--line:#e4e7ec;--brand:#1f4ed8;--brand-soft:#e8efff;--ok:#067647;--ok-soft:#e7f6ec;--warn:#b54708;--warn-soft:#fff4e5;--bad:#b42318;--bad-soft:#fef3f2;--radius:16px;--shadow:0 10px 30px rgba(23,32,51,.06)}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.topbar{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:16px 28px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:38px;height:38px;border-radius:11px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800}
+.brand strong{display:block;letter-spacing:.12em;font-size:13px}
+.brand small{color:var(--muted)}
+.top-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.project{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}
+select,input,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px;outline:none;width:100%}
+select:focus,input:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+.tabs{display:flex;gap:6px;padding:14px 28px 0;max-width:1220px;margin:0 auto;flex-wrap:wrap}
+.tabs button{border:0;background:transparent;color:var(--muted);padding:9px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+.tabs button.active{background:#fff;color:var(--brand);box-shadow:var(--shadow)}
+main{max-width:1220px;margin:0 auto;padding:18px 28px 60px}
+.hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin:10px 0 18px;flex-wrap:wrap}
+.hero h1{margin:4px 0 6px;font-size:26px;letter-spacing:-.02em}
+.hero p{margin:0;max-width:720px}
+.eyebrow{font-size:11px;letter-spacing:.14em;font-weight:800;color:var(--brand)}
+.hero-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;background:var(--brand);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer}
+.btn:hover{filter:brightness(1.05)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:7px 11px;font-size:12px}
+.icon{border:0;background:transparent;font-size:22px;cursor:pointer;color:var(--muted);line-height:1}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:14px}
+.metrics article{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.metrics span{color:var(--muted);font-size:12px}
+.metrics strong{display:block;font-size:22px;margin:4px 0;letter-spacing:-.02em}
+.metrics small{color:var(--muted)}
+.metrics article.alert strong{color:var(--bad)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.panel-head h2{margin:0;font-size:16px}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.progress{height:10px;background:#eef1f6;border-radius:99px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--brand),#4f7df5);border-radius:99px}
+.legend{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:8px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid #f0f2f6;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.sub{display:block;color:var(--muted);font-size:11px}
+.in{color:var(--ok);font-weight:700}
+.out{color:var(--bad);font-weight:700}
+.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:700;background:#eef1f6;color:var(--muted);white-space:nowrap}
+.badge.ok,.badge.compra,.badge.inicial,.badge.devolucion{background:var(--ok-soft);color:var(--ok)}
+.badge.bad,.badge.salida{background:var(--bad-soft);color:var(--bad)}
+.badge.warn,.badge.reserva,.badge.parcial,.badge.entregado{background:var(--warn-soft);color:var(--warn)}
+.badge.info,.badge.aprobado,.badge.reservado{background:var(--brand-soft);color:var(--brand)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form{display:grid;gap:12px}
+.field{display:grid;gap:6px;font-weight:600;font-size:12px}
+.field.inline{display:flex;align-items:center;gap:8px;font-weight:400;color:var(--muted)}
+.field.inline select{width:auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.notice{background:var(--brand-soft);border:1px solid #cdd9ff;color:#1d3ea8;border-radius:10px;padding:10px 12px;font-size:12px;margin:10px 0}
+.notice.warn{background:var(--warn-soft);border-color:#ffd7a8;color:var(--warn)}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.step{flex:1;min-width:110px;border-top:3px solid var(--line);padding-top:8px;color:var(--muted);font-size:12px}
+.step.done{border-color:var(--ok);color:var(--ok)}
+.step.active{border-color:var(--brand);color:var(--brand);font-weight:700}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+details{margin-top:12px}
+summary{cursor:pointer;color:var(--brand);font-weight:600;font-size:12px}
+.timeline{display:grid;gap:8px;margin-top:10px}
+.timeline div{display:grid;gap:2px;padding-left:12px;border-left:2px solid var(--line);font-size:12px}
+.timeline span{color:var(--muted)}
+.rules{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.code-box{display:flex;flex-direction:column;align-items:center;gap:4px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:14px;padding:16px;margin:14px 0;text-align:center}
+.code-box strong{font-size:30px;letter-spacing:.22em}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:12px;font-weight:600;margin-top:8px}
+.check input{width:auto;margin-top:3px}
+.hidden{display:none!important}
+.combo{position:relative}
+.suggestions{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px rgba(23,32,51,.16);max-height:280px;overflow:auto;z-index:30;padding:4px}
+.suggestion{display:flex;justify-content:space-between;gap:12px;width:100%;border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:9px;cursor:pointer;color:var(--ink)}
+.suggestion:hover,.suggestion.active{background:var(--brand-soft)}
+.suggestion strong{display:block;font-size:13px}
+.suggestion small{display:block;color:var(--muted);font-size:11px}
+.suggestion-side{text-align:right;white-space:nowrap;font-size:12px;color:var(--muted)}
+.suggestion.create{display:block;background:#f8fafc;border-top:1px solid var(--line);margin-top:4px;border-radius:0 0 9px 9px}
+.suggestion.create strong{color:var(--brand)}
+mark{background:#fff1a8;color:inherit;border-radius:3px;padding:0 1px}
+.chip-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--ok-soft);border:1px solid #bfe3cb;border-radius:10px;padding:9px 12px}
+.chip strong{display:block;font-size:13px}
+.chip small{display:block;color:var(--ok);font-size:11px}
+.new-material{display:grid;gap:10px;border:1px dashed #cdd9ff;background:#f8faff;border-radius:12px;padding:12px}
+.upload{position:relative;display:flex;align-items:center;gap:14px;padding:20px;border:1.5px dashed #c7d2e8;border-radius:14px;background:linear-gradient(180deg,#fbfcff,#f5f8ff);cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s}
+.upload:hover{border-color:var(--brand);background:#f2f6ff}
+.upload.drag{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 4px rgba(31,78,216,.12)}
+.upload input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0;white-space:nowrap}
+.upload-icon{flex:0 0 46px;height:46px;border-radius:12px;background:var(--ok-soft);color:var(--ok);border:1px solid #bfe3cb;display:grid;place-items:center;font-weight:800;font-size:10px;letter-spacing:.06em}
+.upload-body{flex:1;min-width:0}
+.upload-body strong{display:block;font-size:14px}
+.upload-body small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.upload .btn{pointer-events:none}
+.file-card{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px;background:#fbfcff;flex-wrap:wrap}
+.file-card.bad{border-color:#ffd7a8;background:var(--warn-soft)}
+.file-badge{flex:0 0 40px;height:40px;border-radius:10px;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;font-weight:800;font-size:9px;letter-spacing:.04em}
+.file-info{flex:1;min-width:160px}
+.file-info strong{display:block;font-size:13px;word-break:break-all}
+.file-info small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.file-card .icon{font-size:20px;padding:4px 8px}
+.preview-total td{border-top:1px solid var(--line);font-weight:700;padding-top:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.file-pick{position:relative;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:#fff;cursor:pointer;min-width:0;font-weight:400}
+.file-pick:hover{border-color:var(--brand)}
+.file-pick:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+.file-pick input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0;white-space:nowrap}
+.file-pick-btn{flex:0 0 auto;background:var(--brand-soft);color:var(--brand);font-weight:700;font-size:12px;padding:5px 9px;border-radius:7px}
+.file-pick-name{flex:1;min-width:0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-pick.has-file .file-pick-name{color:var(--ink);font-weight:600}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:grid;place-items:center;padding:20px;z-index:50}
+.modal.hidden,.toast.hidden{display:none}
+.modal-card{background:#fff;border-radius:18px;max-width:760px;width:100%;max-height:90vh;overflow:auto;padding:20px;box-shadow:0 30px 80px rgba(15,23,42,.25)}
+.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.modal-head h2{margin:4px 0 0;font-size:20px}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
+.toast{position:fixed;right:20px;bottom:20px;background:#172033;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.25);z-index:60;max-width:380px;font-size:13px}
+.toast.bad{background:var(--bad)}
+.footer-note{text-align:center;color:var(--muted);font-size:12px;padding:8px 0 0}
+@media(max-width:820px){.split,.grid2{grid-template-columns:1fr}.topbar{padding:12px 16px}.tabs,main{padding-left:16px;padding-right:16px}.hero h1{font-size:22px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">N</span>
+    <div><strong>NEXO</strong><small>Materiales · prototipo de mejoras</small></div>
+  </div>
+  <div class="top-actions">
+    <label class="project">Proyecto
+      <select aria-label="Proyecto"><option>Red LAN · Sede A</option></select>
+    </label>
+    <span class="badge ok">En ejecución</span>
+    <span class="badge info">Datos simulados</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-action="tab" data-tab="presupuesto">Presupuesto</button>
+  <button data-action="tab" data-tab="entradas">Entradas</button>
+  <button data-action="tab" data-tab="kardex">Kardex</button>
+  <button data-action="tab" data-tab="solicitudes">Solicitudes y entrega</button>
+  <button data-action="tab" data-tab="devoluciones">Devoluciones</button>
+</nav>
+
+<main id="app"></main>
+<div id="modal" class="modal hidden" aria-modal="true"></div>
+<div id="toast" class="toast hidden" role="status"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const money = n => 'S/ ' + Number(n).toLocaleString('es-PE', {minimumFractionDigits:2, maximumFractionDigits:2});
+const fmt = n => Number(n).toLocaleString('es-PE', {maximumFractionDigits:4});
+const now = () => new Date().toLocaleString('es-PE', {dateStyle:'short', timeStyle:'short'});
+const today = () => new Date().toISOString().slice(0,10);
+const labelType = t => ({inicial:'Existencia inicial', compra:'Compra', salida:'Salida', devolucion:'Devolución', ajuste:'Ajuste', reserva:'Reserva'}[t] || t);
+const labelStatus = s => ({solicitado:'Solicitado', aprobado:'Aprobado', reservado:'Reservado', parcial:'Entrega parcial', entregado:'Entregado', recibido:'Recibido', cerrado:'Cerrado'}[s] || s);
+
+const state = {
+  tab: 'presupuesto',
+  budget: 25000,
+  nextId: 100,
+  kSku: '',
+  kType: '',
+  imports: [],
+  previewFile: null,
+  previewRows: null,
+  materials: [
+    {sku:'CAB-001', name:'Cable UTP Cat 6', unit:'m', kind:'consumible', stock:880, reserved:0, cost:2.5, min:100},
+    {sku:'CON-45', name:'Conector RJ45', unit:'und', kind:'consumible', stock:460, reserved:0, cost:1.2, min:50},
+    {sku:'SW-24', name:'Switch 24 puertos', unit:'und', kind:'retornable', stock:9, reserved:0, cost:180, min:2},
+    {sku:'RACK-12', name:'Rack 12U', unit:'und', kind:'retornable', stock:3, reserved:0, cost:420, min:1},
+    {sku:'PAT-24', name:'Patch panel 24 puertos', unit:'und', kind:'consumible', stock:9, reserved:0, cost:95, min:2},
+    {sku:'CAN-40', name:'Canaleta 40 mm', unit:'m', kind:'consumible', stock:180, reserved:0, cost:8.5, min:40}
+  ],
+  kardex: [
+    {id:1, date:'2026-10-01', type:'inicial', sku:'CAB-001', qtyIn:1000, qtyOut:0, balance:1000, unitCost:2.5, ref:'Acta de inventario 001', user:'Admin'},
+    {id:2, date:'2026-10-01', type:'inicial', sku:'CON-45', qtyIn:500, qtyOut:0, balance:500, unitCost:1.2, ref:'Acta de inventario 001', user:'Admin'},
+    {id:3, date:'2026-10-01', type:'inicial', sku:'SW-24', qtyIn:10, qtyOut:0, balance:10, unitCost:180, ref:'Acta de inventario 001', user:'Admin'},
+    {id:4, date:'2026-10-01', type:'inicial', sku:'RACK-12', qtyIn:4, qtyOut:0, balance:4, unitCost:420, ref:'Acta de inventario 001', user:'Admin'},
+    {id:5, date:'2026-10-01', type:'inicial', sku:'PAT-24', qtyIn:10, qtyOut:0, balance:10, unitCost:95, ref:'Acta de inventario 001', user:'Admin'},
+    {id:6, date:'2026-10-01', type:'inicial', sku:'CAN-40', qtyIn:160, qtyOut:0, balance:160, unitCost:8.5, ref:'Acta de inventario 001', user:'Admin'},
+    {id:7, date:'2026-10-05', type:'salida', sku:'CAB-001', qtyIn:0, qtyOut:120, balance:880, unitCost:2.5, ref:'SOL-2026-0138', user:'Almacén'},
+    {id:8, date:'2026-10-05', type:'salida', sku:'CON-45', qtyIn:0, qtyOut:40, balance:460, unitCost:1.2, ref:'SOL-2026-0138', user:'Almacén'},
+    {id:9, date:'2026-10-06', type:'salida', sku:'SW-24', qtyIn:0, qtyOut:1, balance:9, unitCost:180, ref:'SOL-2026-0139', user:'Almacén'},
+    {id:10, date:'2026-10-06', type:'salida', sku:'PAT-24', qtyIn:0, qtyOut:1, balance:9, unitCost:95, ref:'SOL-2026-0140', user:'Almacén'},
+    {id:11, date:'2026-10-07', type:'compra', sku:'CAN-40', qtyIn:20, qtyOut:0, balance:180, unitCost:8.5, ref:'Distribuidora Andina · F001-2388', user:'Admin'},
+    {id:12, date:'2026-10-08', type:'salida', sku:'RACK-12', qtyIn:0, qtyOut:1, balance:3, unitCost:420, ref:'SOL-2026-0139', user:'Almacén'}
+  ],
+  requests: [
+    {
+      id:'SOL-2026-0142', requester:'María Quispe', task:'Cableado piso 2', status:'aprobado', code:'842 195',
+      receivedAt:null, evidence:null,
+      items:[
+        {sku:'CAB-001', qty:60, reserved:0, delivered:0, returned:0},
+        {sku:'CON-45', qty:20, reserved:0, delivered:0, returned:0}
+      ],
+      history:[
+        {date:'2026-10-08 10:02', text:'Solicitud creada por María Quispe.'},
+        {date:'2026-10-08 10:15', text:'Aprobada por Jorge Salas (jefe de proyecto).'}
+      ]
+    },
+    {
+      id:'SOL-2026-0139', requester:'Carlos Ramos', task:'Instalación de rack', status:'recibido', code:'315 704',
+      receivedAt:'2026-10-08 16:40', evidence:'acta-entrega-0139.pdf',
+      items:[
+        {sku:'SW-24', qty:1, reserved:0, delivered:1, returned:0},
+        {sku:'RACK-12', qty:1, reserved:0, delivered:1, returned:0}
+      ],
+      history:[
+        {date:'2026-10-07 09:10', text:'Solicitud creada por Carlos Ramos.'},
+        {date:'2026-10-07 09:30', text:'Aprobada por Jorge Salas.'},
+        {date:'2026-10-08 16:40', text:'Recepción confirmada con código.'}
+      ]
+    }
+  ]
+};
+
+const app = $('#app');
+const modal = $('#modal');
+const toastEl = $('#toast');
+const mat = sku => state.materials.find(m => m.sku === sku);
+const req = id => state.requests.find(r => r.id === id);
+const spent = () => state.kardex.filter(k => ['inicial','compra'].includes(k.type)).reduce((s,k) => s + k.qtyIn * k.unitCost, 0);
+
+let toastTimer;
+function toast(msg, kind = 'ok') {
+  toastEl.textContent = msg;
+  toastEl.className = 'toast' + (kind === 'bad' ? ' bad' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.add('hidden'), 4500);
+}
+function openModal(html) {
+  modal.innerHTML = '<div class="modal-card">' + html + '</div>';
+  modal.classList.remove('hidden');
+}
+function closeModal() {
+  modal.classList.add('hidden');
+  modal.innerHTML = '';
+}
+
+function viewBudget() {
+  const total = spent();
+  const left = state.budget - total;
+  const pct = state.budget ? Math.min(100, total / state.budget * 100) : 0;
+  const rows = [...state.kardex]
+    .filter(k => ['inicial','compra'].includes(k.type))
+    .sort((a,b) => b.date.localeCompare(a.date) || b.id - a.id);
+  return `
+  <section class="hero">
+    <div>
+      <span class="eyebrow">INVERSIÓN DEL PROYECTO</span>
+      <h1>Presupuesto y saldo de materiales</h1>
+      <p class="muted">El presupuesto autorizado no se edita al comprar. Cada ingreso descuenta el <strong>saldo disponible</strong> y queda en el kardex. Entregar materiales al equipo no vuelve a descontar.</p>
+    </div>
+    <div class="hero-actions">
+      <button class="btn ghost" data-action="extension">Solicitar ampliación</button>
+      <button class="btn" data-action="tab" data-tab="entradas">Registrar ingreso</button>
+    </div>
+  </section>
+  <div class="metrics">
+    <article><span>Presupuesto autorizado</span><strong>${money(state.budget)}</strong><small>Solo cambia con ampliaciones aprobadas</small></article>
+    <article><span>Inversión registrada</span><strong>${money(total)}</strong><small>${rows.length} ingresos valorizados</small></article>
+    <article class="${left < 0 ? 'alert' : ''}"><span>Saldo disponible</span><strong>${money(left)}</strong><small>Disminuye con cada compra o carga inicial</small></article>
+    <article><span>Ampliaciones pendientes</span><strong>0</strong><small>Requieren aprobación del administrador</small></article>
+  </div>
+  <section class="panel">
+    <div class="panel-head"><div><h2>Ejecución del presupuesto</h2><p class="muted small">${pct.toFixed(1)}% comprometido en materiales</p></div><span class="badge ${pct > 85 ? 'bad' : 'ok'}">${pct.toFixed(1)}%</span></div>
+    <div class="progress"><span style="width:${pct}%"></span></div>
+    <div class="legend"><span>Inversión ${money(total)}</span><span>Disponible ${money(left)}</span></div>
+  </section>
+  <section class="panel">
+    <div class="panel-head"><h2>Ingresos que consumieron presupuesto</h2><button class="btn ghost sm" data-action="tab" data-tab="entradas">Nuevo ingreso</button></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Fecha</th><th>Material</th><th>Tipo</th><th>Cantidad</th><th>Costo unit.</th><th>Inversión</th><th>Sustento</th></tr></thead>
+      <tbody>${rows.map(k => {
+        const m = mat(k.sku);
+        return `<tr><td>${k.date}</td><td><strong>${m.name}</strong><small class="sub">${m.sku}</small></td><td><span class="badge ${k.type}">${labelType(k.type)}</span></td><td>${fmt(k.qtyIn)} ${m.unit}</td><td>${money(k.unitCost)}</td><td><strong>${money(k.qtyIn * k.unitCost)}</strong></td><td>${k.ref}</td></tr>`;
+      }).join('')}</tbody>
+    </table></div>
+  </section>`;
+}
+
+function viewEntries() {
+  return `
+  <section class="hero">
+    <div>
+      <span class="eyebrow">ENTRADAS DE MATERIALES</span>
+      <h1>Registrar lo que entra</h1>
+      <p class="muted">Toda entrada genera stock, kardex y descuento de presupuesto en una sola operación. La existencia inicial solo se permite si el material no tiene movimientos previos.</p>
+    </div>
+  </section>
+  <div class="split">
+    <section class="panel">
+      <div class="panel-head"><h2>Compra o existencia inicial</h2><span class="badge info">Manual</span></div>
+      <form data-form="entry" class="form" autocomplete="off">
+        <label class="field">Nombre del material *
+          <div class="combo">
+            <input id="entry-name" name="materialName" placeholder="Escribe el nombre o código del material" autocomplete="off">
+            <div id="entry-suggestions" class="suggestions hidden" role="listbox" aria-label="Sugerencias de materiales"></div>
+          </div>
+        </label>
+        <input type="hidden" name="sku" id="entry-sku">
+        <div id="entry-selected" class="chip-row hidden"></div>
+        <div id="entry-new" class="new-material hidden">
+          <div class="panel-head" style="margin:0"><div><strong>Material nuevo</strong><p class="muted small">No existe en el catálogo. Revisa el código y la unidad antes de guardar.</p></div><button type="button" class="btn ghost sm" data-action="cancel-new">Buscar existente</button></div>
+          <div class="grid2">
+            <label class="field">Código / SKU *<input name="newSku" id="entry-new-sku" maxlength="40"></label>
+            <label class="field">Unidad *<input name="newUnit" id="entry-new-unit" maxlength="40" value="unidad"></label>
+          </div>
+          <div class="grid2">
+            <label class="field">Tipo<select name="newKind" id="entry-new-kind"><option value="consumible">Consumible</option><option value="retornable">Equipo retornable</option></select></label>
+            <label class="field">Stock mínimo<input name="newMin" id="entry-new-min" type="number" min="0" step="0.0001" value="0"></label>
+          </div>
+        </div>
+        <div class="grid2">
+          <label class="field">Operación<select name="type"><option value="compra">Compra</option><option value="inicial">Existencia inicial</option></select></label>
+          <label class="field">Cantidad<input name="qty" type="number" min="0.0001" step="0.0001" value="10" required></label>
+        </div>
+        <div class="grid2">
+          <label class="field">Precio unitario (S/)<input name="price" type="number" min="0" step="0.01" value="2.50" required></label>
+          <label class="field">Proveedor<input name="supplier" placeholder="Distribuidora Andina" required></label>
+        </div>
+        <div class="grid2">
+          <label class="field">Factura / guía<input name="invoice" placeholder="F001-2451" required></label>
+          <div class="field"><span>Comprobante (opcional)</span>
+          <label class="file-pick">
+            <input type="file" name="evidence">
+            <span class="file-pick-btn">Adjuntar</span>
+            <span class="file-pick-name">Sin archivo seleccionado</span>
+          </label>
+        </div>
+        </div>
+        <div class="form-foot"><span class="muted small">Escribe y elige una sugerencia; si es nuevo, crea el material con su código y unidad.</span><button class="btn" type="submit">Registrar ingreso</button></div>
+      </form>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2>Importar Excel de adquisiciones</h2><span class="badge info">.xlsx</span></div>
+      <p class="muted small">Primero se analiza el archivo y se muestra una vista previa. Nada se guarda hasta confirmar. El mismo archivo se bloquea si ya fue importado en este almacén.</p>
+      <form data-form="import" class="form" autocomplete="off">
+        <label class="upload" id="upload-zone" for="excel">
+          <input type="file" id="excel" name="excel" accept=".xlsx">
+          <span class="upload-icon">XLSX</span>
+          <span class="upload-body">
+            <strong>Arrastra y suelta tu archivo aquí</strong>
+            <small>o haz clic para seleccionarlo · formato .xlsx · hasta 10 MB · una importación por archivo</small>
+          </span>
+          <span class="btn ghost sm">Elegir archivo</span>
+        </label>
+        <div id="preview"></div>
+        <div class="grid2">
+          <label class="field">Proveedor<input name="supplier" placeholder="Distribuidora Andina" required></label>
+          <label class="field">Factura / guía<input name="invoice" placeholder="F001-2451" required></label>
+        </div>
+        <div class="form-foot"><span class="muted small" id="import-hint">Selecciona un archivo para habilitar la importación.</span><button class="btn" id="import-submit" type="submit" disabled>Confirmar importación</button></div>
+      </form>
+    </section>
+  </div>
+  <section class="panel">
+    <div class="panel-head"><h2>Últimos lotes importados</h2><button class="btn ghost sm" data-action="tab" data-tab="kardex">Ver kardex</button></div>
+    ${state.imports.length ? `<div class="table-wrap"><table><thead><tr><th>Archivo</th><th>Fecha</th><th>Estado</th></tr></thead><tbody>${state.imports.map(f => `<tr><td>${f.split('|')[0]}</td><td>${today()}</td><td><span class="badge ok">Importado</span></td></tr>`).join('')}</tbody></table></div>` : '<p class="muted small">Todavía no hay lotes importados en esta sesión.</p>'}
+  </section>`;
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+}
+
+function handleExcelFile(file) {
+  if (!file) return;
+  if (!/\.xlsx$/i.test(file.name)) {
+    state.previewFile = null;
+    state.previewRows = null;
+    renderPreview();
+    toast('Solo se admiten archivos .xlsx.', 'bad');
+    return;
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    state.previewFile = null;
+    state.previewRows = null;
+    renderPreview();
+    toast('El archivo supera el límite de 10 MB.', 'bad');
+    return;
+  }
+  state.previewFile = {name:file.name, size:file.size};
+  state.previewRows = [
+    {sku:'CAB-001', qty:200, price:2.55},
+    {sku:'CON-45', qty:100, price:1.25},
+    {sku:'PAT-24', qty:5, price:96}
+  ];
+  renderPreview();
+  toast('Archivo analizado. Revisa la vista previa antes de confirmar.', 'ok');
+}
+
+function renderPreview() {
+  const box = document.getElementById('preview');
+  if (!box) return;
+  const btn = document.getElementById('import-submit');
+  const hint = document.getElementById('import-hint');
+  if (!state.previewFile || !state.previewRows || !state.previewRows.length) {
+    box.innerHTML = '';
+    if (btn) btn.disabled = true;
+    if (hint) hint.textContent = 'Selecciona un archivo para habilitar la importación.';
+    return;
+  }
+  const total = state.previewRows.reduce((s,r) => s + r.qty * r.price, 0);
+  const dup = state.imports.includes(state.previewFile.name + '|' + state.previewFile.size);
+  if (btn) btn.disabled = dup;
+  if (hint) hint.textContent = dup ? 'Este archivo ya fue importado; elige otro para continuar.' : 'Vista previa obligatoria antes de confirmar.';
+  box.innerHTML = `<div class="file-card ${dup ? 'bad' : ''}">
+    <span class="file-badge">XLSX</span>
+    <span class="file-info"><strong>${escapeHtml(state.previewFile.name)}</strong><small>${formatSize(state.previewFile.size)} · ${state.previewRows.length} filas válidas · Total ${money(total)}</small></span>
+    <span class="badge ${dup ? 'warn' : 'ok'}">${dup ? 'Duplicado' : 'Listo para importar'}</span>
+    <button type="button" class="icon" data-action="clear-file" title="Quitar archivo" aria-label="Quitar archivo">×</button>
+  </div>
+  ${dup ? '<div class="notice warn">Este archivo ya fue importado en este almacén. Elige un archivo distinto.</div>' : ''}
+  <div class="table-wrap"><table><thead><tr><th>SKU</th><th>Material</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr></thead><tbody>${state.previewRows.map(r => {
+    const m = mat(r.sku);
+    return `<tr><td>${r.sku}</td><td>${m.name}</td><td>${fmt(r.qty)} ${m.unit}</td><td>${money(r.price)}</td><td>${money(r.qty * r.price)}</td></tr>`;
+  }).join('')}</tbody><tfoot><tr class="preview-total"><td colspan="4" style="text-align:right">Total del lote</td><td>${money(total)}</td></tr></tfoot></table></div>`;
+}
+
+function viewKardex() {
+  const skus = [...new Set(state.kardex.map(k => k.sku))].sort();
+  const types = ['inicial','compra','salida','devolucion','ajuste'];
+  return `
+  <section class="hero">
+    <div>
+      <span class="eyebrow">TRAZABILIDAD</span>
+      <h1>Kardex por material y almacén</h1>
+      <p class="muted">Cada entrada y salida queda con fecha, usuario, referencia y saldo posterior. Las reservas se ven en la solicitud porque comprometen stock sin moverlo físicamente.</p>
+    </div>
+    <button class="btn ghost" data-action="export">Exportar CSV</button>
+  </section>
+  <section class="panel">
+    <div class="toolbar">
+      <label class="field inline">Material<select data-kfilter="sku"><option value="">Todos</option>${skus.map(s => `<option value="${s}" ${state.kSku === s ? 'selected' : ''}>${s} · ${mat(s).name}</option>`).join('')}</select></label>
+      <label class="field inline">Tipo<select data-kfilter="type"><option value="">Todos</option>${types.map(t => `<option value="${t}" ${state.kType === t ? 'selected' : ''}>${labelType(t)}</option>`).join('')}</select></label>
+      <span class="muted small">Saldo físico después de cada movimiento</span>
+    </div>
+    <div id="k-table">${kardexTable()}</div>
+  </section>`;
+}
+
+function kardexTable() {
+  const rows = [...state.kardex]
+    .filter(k => (!state.kSku || k.sku === state.kSku) && (!state.kType || k.type === state.kType))
+    .sort((a,b) => a.date.localeCompare(b.date) || a.id - b.id);
+  return `<div class="table-wrap"><table>
+    <thead><tr><th>Fecha</th><th>Tipo</th><th>Material</th><th>Entrada</th><th>Salida</th><th>Saldo</th><th>Usuario</th><th>Referencia</th></tr></thead>
+    <tbody>${rows.map(k => {
+      const m = mat(k.sku);
+      return `<tr><td>${k.date}</td><td><span class="badge ${k.type}">${labelType(k.type)}</span></td><td><strong>${m.name}</strong><small class="sub">${m.sku} · ${m.unit}</small></td><td class="in">${k.qtyIn ? fmt(k.qtyIn) : '—'}</td><td class="out">${k.qtyOut ? fmt(k.qtyOut) : '—'}</td><td><strong>${fmt(k.balance)}</strong></td><td>${k.user}</td><td>${k.ref}</td></tr>`;
+    }).join('') || '<tr><td colspan="8" class="muted">Sin movimientos para el filtro.</td></tr>'}</tbody>
+  </table></div>`;
+}
+
+function viewRequests() {
+  return `
+  <section class="hero">
+    <div>
+      <span class="eyebrow">SOLICITUDES Y ENTREGAS</span>
+      <h1>Quién pide, quién entrega y quién recibe</h1>
+      <p class="muted">El solicitante pide; otra persona aprueba; almacén reserva y entrega; el receptor confirma con un código. La entrega puede ser parcial.</p>
+    </div>
+  </section>
+  ${state.requests.map(requestCard).join('')}
+  <section class="panel">
+    <h2>Reglas que aplica el flujo</h2>
+    <ul class="rules">
+      <li>El solicitante no puede aprobar su propia solicitud.</li>
+      <li>Aprobar valida stock; reservar lo compromete; entregar lo descuenta del físico.</li>
+      <li>La recepción no se marca sola: requiere el código de entrega.</li>
+      <li>Una entrega parcial deja saldo pendiente y se puede completar después.</li>
+    </ul>
+  </section>`;
+}
+
+function requestCard(r) {
+  const idx = ({solicitado:0, aprobado:1, reservado:2, parcial:3, entregado:3, recibido:4, cerrado:4}[r.status] ?? 0);
+  const steps = ['Solicitado','Aprobado','Reservado','Entregado','Recibido'];
+  const stepsHtml = steps.map((s,i) => `<div class="step ${i < idx ? 'done' : i === idx ? 'active' : ''}"><strong>${i + 1}</strong> ${s}</div>`).join('');
+  const items = r.items.map(it => {
+    const m = mat(it.sku);
+    return `<tr><td><strong>${m.name}</strong><small class="sub">${m.sku} · ${m.unit}</small></td><td>${fmt(it.qty)}</td><td>${fmt(it.reserved)}</td><td>${fmt(it.delivered)}</td><td>${fmt(it.qty - it.delivered)}</td></tr>`;
+  }).join('');
+  const pending = r.items.reduce((s,it) => s + (it.qty - it.delivered), 0);
+  let actions = '';
+  if (r.status === 'aprobado') actions = `<button class="btn" data-action="reserve" data-id="${r.id}">Reservar materiales</button>`;
+  else if (r.status === 'reservado' || r.status === 'parcial') actions = `<button class="btn" data-action="deliver" data-id="${r.id}">Registrar ${r.status === 'parcial' ? 'entrega restante' : 'entrega'}</button>`;
+  else if (r.status === 'entregado') actions = `<button class="btn" data-action="receive" data-id="${r.id}">Confirmar recepción con código</button>`;
+  else if (r.status === 'recibido' && r.items.every(it => mat(it.sku).kind === 'consumible')) actions = `<button class="btn ghost" data-action="close-request" data-id="${r.id}">Reportar consumo y cerrar</button>`;
+  else if (r.status === 'recibido') actions = '<span class="badge ok">Recepción confirmada</span>';
+  else if (r.status === 'cerrado') actions = '<span class="badge ok">Pedido cerrado</span>';
+  return `<article class="panel">
+    <div class="panel-head">
+      <div><span class="eyebrow">${r.id}</span><h2>${r.task}</h2><p class="muted small">Solicita: <strong>${r.requester}</strong>${r.receivedAt ? ' · Recibido el ' + r.receivedAt : ''}</p></div>
+      <span class="badge ${r.status === 'recibido' || r.status === 'cerrado' ? 'ok' : r.status === 'aprobado' || r.status === 'reservado' ? 'info' : 'warn'}">${labelStatus(r.status)}</span>
+    </div>
+    <div class="steps">${stepsHtml}</div>
+    <div class="table-wrap"><table><thead><tr><th>Material</th><th>Pedido</th><th>Reservado</th><th>Entregado</th><th>Pendiente</th></tr></thead><tbody>${items}</tbody></table></div>
+    ${r.status === 'entregado' ? `<div class="notice"><strong>Código de entrega: ${r.code}</strong> · El receptor debe ingresarlo para confirmar. Hasta entonces el pedido no está recibido.</div>` : ''}
+    ${r.status === 'parcial' ? `<div class="notice warn">Entrega parcial: quedan ${fmt(pending)} unidades por entregar. El stock restante sigue reservado.</div>` : ''}
+    ${r.evidence ? `<p class="muted small">Evidencia adjunta: <strong>${r.evidence}</strong></p>` : ''}
+    <div class="action-row">${actions}</div>
+    <details><summary>Historial del pedido</summary><div class="timeline">${r.history.map(h => `<div><strong>${h.date}</strong><span>${h.text}</span></div>`).join('')}</div></details>
+  </article>`;
+}
+
+function viewReturns() {
+  const cards = [];
+  state.requests.forEach(r => r.items.forEach(it => {
+    const m = mat(it.sku);
+    const pend = it.delivered - it.returned;
+    if (m.kind === 'retornable' && pend > 0) {
+      cards.push(`<article class="panel">
+        <div class="panel-head">
+          <div><h2>${m.name}</h2><p class="muted small">${r.id} · ${r.requester} · ${r.task}</p></div>
+          <span class="badge warn">${fmt(pend)} ${m.unit} por devolver</span>
+        </div>
+        <form data-form="return" data-id="${r.id}" data-sku="${m.sku}" class="form">
+          <div class="grid2">
+            <label class="field">Cantidad a devolver<input name="qty" type="number" min="0.0001" max="${pend}" step="0.0001" value="${pend}" required></label>
+            <label class="field">Condición<select name="condition"><option>Buen estado</option><option>Con observaciones</option><option>Dañado</option></select></label>
+          </div>
+          <div class="form-foot"><span class="muted small">La devolución suma stock y queda registrada en el kardex.</span><button class="btn" type="submit">Registrar devolución</button></div>
+        </form>
+      </article>`);
+    }
+  }));
+  return `
+  <section class="hero">
+    <div>
+      <span class="eyebrow">DEVOLUCIONES Y CONSUMO</span>
+      <h1>Cerrar el ciclo de los materiales</h1>
+      <p class="muted">Los equipos retornables vuelven al almacén y recuperan stock. Los consumibles se cierran con el reporte de uso del solicitante.</p>
+    </div>
+  </section>
+  ${cards.length ? cards.join('') : '<section class="panel"><p class="muted">No hay equipos retornables pendientes de devolución.</p></section>'}
+  <section class="panel">
+    <div class="panel-head"><h2>Reporte de consumo</h2><span class="badge info">consumibles</span></div>
+    <p class="muted small">Cuando el solicitante confirma la recepción, el pedido queda "recibido". Para cerrarlo, registra la cantidad usada y el saldo no consumido. En este prototipo, el botón "Reportar consumo y cerrar" del pedido consumible simula ese cierre.</p>
+  </section>`;
+}
+
+function openExtension() {
+  openModal(`<div class="modal-head"><div><span class="eyebrow">AMPLIACIÓN</span><h2>Solicitar ampliación de presupuesto</h2></div><button class="icon" type="button" data-action="close">×</button></div>
+  <form data-form="extension" class="form">
+    <p class="muted">La ampliación queda pendiente hasta que un administrador la apruebe. En este prototipo se aprueba al confirmar para poder seguir probando.</p>
+    <div class="grid2">
+      <label class="field">Importe adicional (S/)<input name="amount" type="number" min="0.01" step="0.01" value="5000" required></label>
+      <label class="field">Justificación<input name="reason" required minlength="5" value="Compra adicional de conectores" placeholder="Qué se necesita comprar"></label>
+    </div>
+    <div class="modal-foot"><button type="button" class="btn ghost" data-action="close">Cancelar</button><button class="btn" type="submit">Enviar y aprobar (demo)</button></div>
+  </form>`);
+}
+
+function reserve(id) {
+  const r = req(id);
+  if (!r || r.status !== 'aprobado') throw new Error('Solo se puede reservar una solicitud aprobada.');
+  for (const it of r.items) {
+    const pend = it.qty - it.delivered;
+    if (pend <= 0) continue;
+    const m = mat(it.sku);
+    if (m.stock - m.reserved < pend) throw new Error(`Stock insuficiente de ${m.name}. Disponible: ${fmt(m.stock - m.reserved)} ${m.unit}.`);
+  }
+  for (const it of r.items) {
+    const pend = it.qty - it.delivered;
+    if (pend <= 0) continue;
+    const m = mat(it.sku);
+    m.reserved += pend;
+    it.reserved += pend;
+  }
+  r.status = 'reservado';
+  r.history.push({date:now(), text:'Reserva de stock confirmada por Almacén.'});
+  render();
+  toast('Materiales reservados. El stock disponible ya está comprometido.', 'ok');
+}
+
+function openDelivery(id) {
+  const r = req(id);
+  if (!r) return;
+  const rows = r.items.map((it,i) => {
+    const m = mat(it.sku);
+    const pend = it.qty - it.delivered;
+    return `<tr><td><strong>${m.name}</strong><small class="sub">${m.sku} · ${m.unit}</small></td><td>${fmt(pend)}</td><td><input name="q${i}" type="number" min="0" max="${pend}" step="0.0001" value="${pend}" style="width:110px"></td></tr>`;
+  }).join('');
+  openModal(`<div class="modal-head"><div><span class="eyebrow">ENTREGA DE MATERIALES</span><h2>${r.id} · ${r.requester}</h2></div><button class="icon" type="button" data-action="close">×</button></div>
+  <form data-form="deliver" data-id="${r.id}">
+    <p class="muted">Registra la cantidad real entregada. Si entregas menos, el pedido queda en <strong>entrega parcial</strong> y el saldo sigue reservado.</p>
+    <div class="table-wrap"><table><thead><tr><th>Material</th><th>Pendiente</th><th>Entregar ahora</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <label class="field">Observación / condición<input name="notes" placeholder="Ej. caja abierta, equipo con rayón"></label>
+    <div class="field"><span>Evidencia (foto del acta o recepción)</span>
+      <label class="file-pick">
+        <input type="file" name="evidence" accept="image/*,.pdf">
+        <span class="file-pick-btn">Adjuntar</span>
+        <span class="file-pick-name">Sin archivo seleccionado</span>
+      </label>
+    </div>
+    <div class="code-box"><span>Código de entrega</span><strong>${r.code}</strong><small>Este código lo recibe quien entrega; el receptor lo usa para confirmar.</small></div>
+    <div class="modal-foot"><button type="button" class="btn ghost" data-action="close">Cancelar</button><button class="btn" type="submit">Registrar entrega</button></div>
+  </form>`);
+}
+
+function openReceive(id) {
+  const r = req(id);
+  if (!r) return;
+  openModal(`<div class="modal-head"><div><span class="eyebrow">CONFIRMACIÓN DE RECEPCIÓN</span><h2>${r.id} · ${r.requester}</h2></div><button class="icon" type="button" data-action="close">×</button></div>
+  <form data-form="receive" data-id="${r.id}">
+    <p class="muted">Confirma solo después de revisar los materiales. En producción, el código lo entrega Almacén y el receptor lo ingresa aquí.</p>
+    <div class="code-box"><span>Código de entrega</span><strong>${r.code}</strong><small>Demostración: el código se muestra para poder probar el flujo.</small></div>
+    <label class="field">Ingresa el código<input name="code" inputmode="numeric" placeholder="000 000" autocomplete="off" required></label>
+    <label class="field">Observación (opcional)<input name="note" placeholder="Faltó un conector, caja dañada..."></label>
+    <label class="check"><input type="checkbox" name="ok" required> Confirmo que recibí los materiales y cantidades indicados.</label>
+    <div class="modal-foot"><button type="button" class="btn ghost" data-action="close">Volver</button><button class="btn" type="submit">Confirmar recepción</button></div>
+  </form>`);
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function normalizeText(value) {
+  return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+function highlight(text, query) {
+  const source = String(text);
+  const q = String(query || '').trim();
+  if (!q) return escapeHtml(source);
+  const index = normalizeText(source).indexOf(normalizeText(q));
+  if (index < 0) return escapeHtml(source);
+  return escapeHtml(source.slice(0, index)) + '<mark>' + escapeHtml(source.slice(index, index + q.length)) + '</mark>' + escapeHtml(source.slice(index + q.length));
+}
+function suggestSku(name) {
+  const words = normalizeText(name).toUpperCase().replace(/[^A-Z0-9 ]/g, ' ').trim().split(/\s+/).filter(Boolean);
+  const base = (words[0] || 'MAT').slice(0, 3) + (words[1] ? '-' + words[1].slice(0, 2) : '');
+  let sku = base, n = 1;
+  while (state.materials.some(m => m.sku === sku)) sku = base + '-' + (++n);
+  return sku;
+}
+let suggestionIndex = -1;
+function hideSuggestions() {
+  const box = document.getElementById('entry-suggestions');
+  if (box) { box.classList.add('hidden'); box.innerHTML = ''; }
+  suggestionIndex = -1;
+}
+function openSuggestions(query) {
+  const box = document.getElementById('entry-suggestions');
+  if (!box) return;
+  const q = String(query || '').trim();
+  const matches = state.materials
+    .filter(m => !q || normalizeText(m.name).includes(normalizeText(q)) || normalizeText(m.sku).includes(normalizeText(q)))
+    .slice(0, 6);
+  const exact = state.materials.some(m => normalizeText(m.name) === normalizeText(q) || m.sku.toUpperCase() === q.toUpperCase());
+  const showCreate = !!q && !exact;
+  if (!matches.length && !showCreate) { hideSuggestions(); return; }
+  box.innerHTML = matches.map(m => `<button type="button" class="suggestion" role="option" data-sku="${escapeHtml(m.sku)}">
+      <span><strong>${highlight(m.name, q)}</strong><small>${escapeHtml(m.sku)} · ${escapeHtml(m.unit)} · ${m.kind}</small></span>
+      <span class="suggestion-side">Stock ${fmt(m.stock)}<small>${money(m.cost)}</small></span>
+    </button>`).join('') + (showCreate ? `<button type="button" class="suggestion create" role="option"><strong>+ Crear «${escapeHtml(q)}» como material nuevo</strong><small>Se agregará al catálogo y a esta entrada.</small></button>` : '');
+  box.classList.remove('hidden');
+  suggestionIndex = -1;
+}
+function clearEntrySelection(clearInput = true) {
+  const hidden = document.getElementById('entry-sku'); if (hidden) hidden.value = '';
+  const chip = document.getElementById('entry-selected'); if (chip) { chip.classList.add('hidden'); chip.innerHTML = ''; }
+  const panel = document.getElementById('entry-new'); if (panel) panel.classList.add('hidden');
+  if (clearInput) { const name = document.getElementById('entry-name'); if (name) name.value = ''; }
+}
+function selectExisting(sku) {
+  const m = mat(sku);
+  if (!m) return;
+  const name = document.getElementById('entry-name'); if (name) name.value = m.name;
+  const hidden = document.getElementById('entry-sku'); if (hidden) hidden.value = m.sku;
+  const price = document.querySelector('form[data-form="entry"] [name="price"]'); if (price) price.value = m.cost;
+  const chip = document.getElementById('entry-selected');
+  if (chip) {
+    chip.innerHTML = `<span class="chip"><strong>${escapeHtml(m.name)}</strong><small>${escapeHtml(m.sku)} · ${escapeHtml(m.unit)} · ${m.kind}</small></span><span class="muted small">Stock actual: ${fmt(m.stock)} ${escapeHtml(m.unit)} · Precio sugerido: ${money(m.cost)}</span>`;
+    chip.classList.remove('hidden');
+  }
+  const panel = document.getElementById('entry-new'); if (panel) panel.classList.add('hidden');
+  hideSuggestions();
+}
+function prepareNew(name) {
+  const clean = String(name || '').trim();
+  if (!clean) return;
+  const nameInput = document.getElementById('entry-name'); if (nameInput) nameInput.value = clean;
+  const hidden = document.getElementById('entry-sku'); if (hidden) hidden.value = '';
+  const chip = document.getElementById('entry-selected'); if (chip) { chip.classList.add('hidden'); chip.innerHTML = ''; }
+  const panel = document.getElementById('entry-new'); if (panel) panel.classList.remove('hidden');
+  const sku = document.getElementById('entry-new-sku');
+  if (sku) { sku.value = suggestSku(clean); sku.dataset.touched = ''; sku.focus(); }
+  hideSuggestions();
+}
+
+function submitEntry(fd) {
+  const type = String(fd.get('type'));
+  const qty = Number(fd.get('qty'));
+  const price = Number(fd.get('price'));
+  const supplier = String(fd.get('supplier') || '').trim();
+  const invoice = String(fd.get('invoice') || '').trim();
+  const selectedSku = String(fd.get('sku') || '').trim();
+  const typedName = String(fd.get('materialName') || '').trim();
+  const newUnit = String(fd.get('newUnit') || '').trim();
+  const newKind = String(fd.get('newKind') || 'consumible');
+  const newMin = Number(fd.get('newMin') || 0);
+  if (!(qty > 0) || !(price >= 0)) throw new Error('Cantidad y precio inválidos.');
+  let sku = selectedSku;
+  let created = false;
+  let materialName = '';
+  if (!sku) {
+    const match = state.materials.find(m => normalizeText(m.name) === normalizeText(typedName) || m.sku.toUpperCase() === typedName.toUpperCase());
+    if (match) {
+      sku = match.sku;
+      materialName = match.name;
+    } else {
+      const newSku = String(fd.get('newSku') || '').trim().toUpperCase();
+      if (!typedName) throw new Error('Escribe el nombre del material o selecciona una sugerencia.');
+      if (!newSku || !newUnit) throw new Error('Completa el código y la unidad del material nuevo.');
+      if (!['consumible', 'retornable'].includes(newKind)) throw new Error('Tipo de material inválido.');
+      if (!Number.isFinite(newMin) || newMin < 0) throw new Error('Stock mínimo inválido.');
+      if (state.materials.some(m => m.sku === newSku)) throw new Error('Ya existe un material con el código ' + newSku + '.');
+      sku = newSku;
+      materialName = typedName;
+      created = true;
+    }
+  } else {
+    const m = mat(sku);
+    if (!m) throw new Error('El material seleccionado ya no está disponible.');
+    materialName = m.name;
+  }
+  if (type === 'inicial' && state.kardex.some(k => k.sku === sku)) throw new Error('La existencia inicial solo se permite si el material no tiene movimientos. Usa Compra.');
+  const total = qty * price;
+  const left = state.budget - spent();
+  if (total > left) throw new Error(`Saldo insuficiente. Disponible: ${money(left)}. Solicita una ampliación.`);
+  if (created) {
+    state.materials.push({sku, name:materialName, unit:newUnit, kind:newKind, stock:0, reserved:0, cost:price, min:newMin});
+  }
+  const m = mat(sku);
+  m.stock += qty;
+  m.cost = price;
+  state.kardex.unshift({id:state.nextId++, date:today(), type, sku, qtyIn:qty, qtyOut:0, balance:m.stock, unitCost:price, ref:`${supplier} · ${invoice}`.replace(/^ · | · $/g, ''), user:'Tú · Administrador'});
+  render();
+  toast(`Ingreso registrado${created ? ' y material ' + sku + ' creado' : ''}. Saldo disponible: ${money(state.budget - spent())}.`, 'ok');
+}
+
+function submitImport(fd) {
+  if (!state.previewFile || !state.previewRows || !state.previewRows.length) throw new Error('Selecciona un archivo .xlsx y revisa la vista previa.');
+  const key = state.previewFile.name + '|' + state.previewFile.size;
+  if (state.imports.includes(key)) throw new Error('Este archivo ya fue importado en este almacén.');
+  const rows = state.previewRows;
+  const total = rows.reduce((s,r) => s + r.qty * r.price, 0);
+  const left = state.budget - spent();
+  if (total > left) throw new Error(`La importación supera el saldo disponible (${money(left)}). Solicita una ampliación.`);
+  const supplier = String(fd.get('supplier') || '').trim();
+  const invoice = String(fd.get('invoice') || '').trim();
+  rows.forEach(row => { if (!mat(row.sku)) throw new Error('Material no encontrado: ' + row.sku); });
+  for (const row of rows) {
+    const m = mat(row.sku);
+    m.stock += row.qty;
+    m.cost = row.price;
+    state.kardex.unshift({id:state.nextId++, date:today(), type:'compra', sku:row.sku, qtyIn:row.qty, qtyOut:0, balance:m.stock, unitCost:row.price, ref:`${supplier} · ${invoice}`, user:'Tú · Administrador'});
+  }
+  state.imports.push(key);
+  state.previewFile = null;
+  state.previewRows = null;
+  render();
+  toast(`Importación confirmada: ${rows.length} filas. Saldo disponible: ${money(state.budget - spent())}.`, 'ok');
+}
+
+function submitDelivery(f, fd) {
+  const r = req(f.dataset.id);
+  const quantities = r.items.map((it,i) => {
+    const pend = it.qty - it.delivered;
+    const q = Number(fd.get('q' + i) || 0);
+    if (!Number.isFinite(q) || q < 0 || q > pend) throw new Error('Cantidad de entrega inválida.');
+    if (q > mat(it.sku).reserved) throw new Error(`No hay reserva suficiente de ${mat(it.sku).name}.`);
+    return q;
+  });
+  const moved = quantities.reduce((s,q) => s + q, 0);
+  if (moved <= 0) throw new Error('Indica al menos una cantidad a entregar.');
+  r.items.forEach((it,i) => {
+    const q = quantities[i];
+    if (q <= 0) return;
+    const m = mat(it.sku);
+    m.stock -= q;
+    m.reserved -= q;
+    it.reserved -= q;
+    it.delivered += q;
+    state.kardex.unshift({id:state.nextId++, date:today(), type:'salida', sku:it.sku, qtyIn:0, qtyOut:q, balance:m.stock, unitCost:m.cost, ref:r.id, user:'Almacén · Tú'});
+  });
+  const complete = r.items.every(it => it.delivered >= it.qty);
+  r.status = complete ? 'entregado' : 'parcial';
+  const evidence = fd.get('evidence');
+  if (evidence && evidence.name) r.evidence = evidence.name;
+  r.history.push({date:now(), text:`Entrega ${complete ? 'completa' : 'parcial'} registrada (${fmt(moved)} unidades). Código ${r.code}.`});
+  closeModal();
+  render();
+  toast('Entrega registrada. El receptor debe confirmar con el código.', 'ok');
+}
+
+function submitReceive(f, fd) {
+  const r = req(f.dataset.id);
+  const code = String(fd.get('code') || '').replace(/\s/g, '');
+  if (code !== r.code.replace(/\s/g, '')) throw new Error('El código no coincide. Pide el código a quien entregó.');
+  r.status = 'recibido';
+  r.receivedAt = now();
+  const note = String(fd.get('note') || '').trim();
+  r.history.push({date:now(), text:'Recepción confirmada por el solicitante.' + (note ? ` Observación: ${note}` : '')});
+  closeModal();
+  render();
+  toast('Recepción confirmada. El pedido queda listo para consumo o devolución.', 'ok');
+}
+
+function submitExtension(fd) {
+  const amount = Number(fd.get('amount'));
+  if (!(amount > 0)) throw new Error('Indica un importe válido.');
+  state.budget += amount;
+  closeModal();
+  render();
+  toast(`Ampliación aprobada (demo). Nuevo presupuesto: ${money(state.budget)}.`, 'ok');
+}
+
+function submitReturn(f, fd) {
+  const r = req(f.dataset.id);
+  const it = r.items.find(x => x.sku === f.dataset.sku);
+  if (!it) throw new Error('Material no encontrado en la solicitud.');
+  const q = Number(fd.get('qty'));
+  const condition = String(fd.get('condition') || 'Buen estado');
+  if (!(q > 0) || q > it.delivered - it.returned) throw new Error('Cantidad de devolución inválida.');
+  const m = mat(it.sku);
+  m.stock += q;
+  it.returned += q;
+  state.kardex.unshift({id:state.nextId++, date:today(), type:'devolucion', sku:it.sku, qtyIn:q, qtyOut:0, balance:m.stock, unitCost:m.cost, ref:`${r.id} · ${condition}`, user:'Almacén · Tú'});
+  r.history.push({date:now(), text:`Devolución de ${fmt(q)} ${m.unit} de ${m.name} (${condition}).`});
+  const allReturned = r.items.every(x => mat(x.sku).kind !== 'retornable' || x.returned >= x.delivered);
+  if (allReturned) r.status = 'cerrado';
+  render();
+  toast('Devolución registrada. El stock vuelve a estar disponible.', 'ok');
+}
+
+function exportCsv() {
+  const rows = [['Fecha','Tipo','SKU','Material','Entrada','Salida','Saldo','Usuario','Referencia']];
+  [...state.kardex]
+    .sort((a,b) => a.date.localeCompare(b.date) || a.id - b.id)
+    .forEach(k => rows.push([k.date, labelType(k.type), k.sku, mat(k.sku).name, k.qtyIn, k.qtyOut, k.balance, k.user, k.ref]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = 'kardex-materiales.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Kardex exportado.', 'ok');
+}
+
+const views = {presupuesto:viewBudget, entradas:viewEntries, kardex:viewKardex, solicitudes:viewRequests, devoluciones:viewReturns};
+
+function render() {
+  document.querySelectorAll('#tabs [data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === state.tab));
+  app.innerHTML = views[state.tab]();
+  if (state.tab === 'entradas' && state.previewRows) renderPreview();
+}
+
+document.addEventListener('click', e => {
+  const suggestion = e.target.closest('#entry-suggestions .suggestion');
+  if (suggestion) {
+    e.preventDefault();
+    try {
+      if (suggestion.dataset.sku) selectExisting(suggestion.dataset.sku);
+      else prepareNew(document.getElementById('entry-name').value);
+    } catch (err) {
+      toast(err.message || 'No se pudo seleccionar el material.', 'bad');
+    }
+    return;
+  }
+  if (!e.target.closest('.combo') && !e.target.closest('#entry-selected')) hideSuggestions();
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  e.preventDefault();
+  try {
+    const a = el.dataset.action;
+    if (a === 'tab') { state.tab = el.dataset.tab; render(); }
+    else if (a === 'close') closeModal();
+    else if (a === 'extension') openExtension();
+    else if (a === 'reserve') reserve(el.dataset.id);
+    else if (a === 'deliver') openDelivery(el.dataset.id);
+    else if (a === 'receive') openReceive(el.dataset.id);
+    else if (a === 'export') exportCsv();
+    else if (a === 'cancel-new') { clearEntrySelection(); hideSuggestions(); }
+    else if (a === 'clear-file') {
+      state.previewFile = null;
+      state.previewRows = null;
+      const input = document.getElementById('excel');
+      if (input) input.value = '';
+      renderPreview();
+      toast('Archivo quitado. Puedes elegir otro.', 'ok');
+    }
+    else if (a === 'close-request') {
+      const r = req(el.dataset.id);
+      r.status = 'cerrado';
+      r.history.push({date:now(), text:'Consumo reportado y pedido cerrado.'});
+      render();
+      toast('Pedido cerrado con reporte de consumo.', 'ok');
+    }
+  } catch (err) {
+    toast(err.message || 'No se pudo completar la operación.', 'bad');
+  }
+});
+
+document.addEventListener('submit', e => {
+  const f = e.target.closest('form[data-form]');
+  if (!f) return;
+  e.preventDefault();
+  const fd = new FormData(f);
+  try {
+    if (f.dataset.form === 'entry') submitEntry(fd);
+    else if (f.dataset.form === 'import') submitImport(fd);
+    else if (f.dataset.form === 'deliver') submitDelivery(f, fd);
+    else if (f.dataset.form === 'receive') submitReceive(f, fd);
+    else if (f.dataset.form === 'extension') submitExtension(fd);
+    else if (f.dataset.form === 'return') submitReturn(f, fd);
+  } catch (err) {
+    toast(err.message || 'No se pudo completar la operación.', 'bad');
+  }
+});
+
+document.addEventListener('change', e => {
+  if (e.target.id === 'excel') {
+    handleExcelFile(e.target.files && e.target.files[0]);
+  }
+  if (e.target.matches('.file-pick input[type=file]')) {
+    const wrap = e.target.closest('.file-pick');
+    const label = wrap.querySelector('.file-pick-name');
+    const file = e.target.files && e.target.files[0];
+    wrap.classList.toggle('has-file', !!file);
+    label.textContent = file ? file.name : 'Sin archivo seleccionado';
+  }
+  if (e.target.matches('[data-kfilter]')) {
+    state[e.target.dataset.kfilter === 'sku' ? 'kSku' : 'kType'] = e.target.value;
+    const box = document.getElementById('k-table');
+    if (box) box.innerHTML = kardexTable();
+  }
+});
+
+['dragenter', 'dragover'].forEach(type => document.addEventListener(type, e => {
+  const zone = e.target.closest('#upload-zone');
+  if (!zone) return;
+  e.preventDefault();
+  if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+  zone.classList.add('drag');
+}));
+
+document.addEventListener('dragleave', e => {
+  const zone = e.target.closest('#upload-zone');
+  if (zone && !zone.contains(e.relatedTarget)) zone.classList.remove('drag');
+});
+
+document.addEventListener('drop', e => {
+  const zone = e.target.closest('#upload-zone');
+  if (!zone) return;
+  e.preventDefault();
+  zone.classList.remove('drag');
+  const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if (file) handleExcelFile(file);
+});
+
+document.addEventListener('input', e => {
+  if (e.target.id === 'entry-name') {
+    clearEntrySelection(false);
+    openSuggestions(e.target.value);
+  }
+});
+
+document.addEventListener('focusin', e => {
+  if (e.target.id === 'entry-name' && e.target.value.trim()) openSuggestions(e.target.value);
+});
+
+document.addEventListener('keydown', e => {
+  if (!e.target.matches('#entry-name')) return;
+  const box = document.getElementById('entry-suggestions');
+  if (!box || box.classList.contains('hidden')) {
+    if (e.key === 'ArrowDown' && e.target.value.trim()) openSuggestions(e.target.value);
+    return;
+  }
+  const items = Array.from(box.querySelectorAll('.suggestion'));
+  if (!items.length) return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    suggestionIndex = e.key === 'ArrowDown'
+      ? (suggestionIndex + 1) % items.length
+      : (suggestionIndex - 1 + items.length) % items.length;
+    items.forEach((item, i) => item.classList.toggle('active', i === suggestionIndex));
+    items[suggestionIndex].scrollIntoView({block:'nearest'});
+  } else if (e.key === 'Enter') {
+    if (suggestionIndex >= 0) {
+      e.preventDefault();
+      const item = items[suggestionIndex];
+      if (item.dataset.sku) selectExisting(item.dataset.sku);
+      else prepareNew(e.target.value);
+    }
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    hideSuggestions();
+  }
+});
+
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
+
+render();
+</script>
+</body>
+</html>

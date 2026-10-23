@@ -52,6 +52,9 @@ html[data-theme=dark] :is(.status-blocked,.status-rejected,.status-out_of_stock)
 html[data-theme=dark] :is(.status-needs_changes,.status-on_hold){background:#3c322b;color:#edc298}
 html[data-theme=dark] .status-in_review{background:#342d48;color:#c5b5eb}
 html[data-theme=dark] .status-delivered{background:#203a46;color:#93cddd}
+html[data-theme=dark] .status-partially_delivered{background:#3d3427;color:#e9c988}
+html[data-theme=dark] :is(.status-usage_reported,.status-returned){background:#203c36;color:#8fd5bc}
+html[data-theme=dark] .status-cancelled{background:#2d3545;color:#aab6c8}
 html[data-theme=dark] :is(.notice,.attention-card){background:#272d40;border-color:var(--line);color:#c2cbe0}
 html[data-theme=dark] :is(.notice strong,.notice a,.attention-card p){color:#c2cbe0}
 html[data-theme=dark] .team-success{background:#203c36;color:#8fd5bc;border-color:#34564c}
@@ -95,3 +98,6 @@ html[data-reduced-motion=true] *,html[data-reduced-motion=true] *::before,html[d
 html[data-reduced-motion=true] .project-card:hover{transform:none}
 @media(max-width:650px){.appearance-body{padding:20px;gap:20px}.theme-options{gap:8px}.theme-option{padding:16px 4px;font-size:calc(10px * var(--font-scale))}.appearance-controls{grid-template-columns:1fr}.sidebar-tip{margin:10px 0}.topbar-actions select{max-width:135px}.theme-option span{overflow-wrap:anywhere}}
 @media(max-width:650px){.topbar-actions{gap:6px}.topbar-actions select{max-width:105px}.topbar-actions .avatar{width:28px;height:28px}.breadcrumbs{max-width:60px}.topbar-actions .icon-button{padding:5px}}
+html[data-theme=dark] .delivery-receipt-icon{background:#17352f;color:#8fd5bc}
+html[data-theme=dark] .delivery-summary .delivery-complete{color:#8fd5bc}
+html[data-theme=dark] .delivery-summary .delivery-partial,html[data-theme=dark] .delivery-remaining{color:#e9c988}

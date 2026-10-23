@@ -4,6 +4,8 @@ export type WorkspaceData = {
   connected: boolean; userId: string; userName: string; grants: Grant[];
   organizations: Row[]; projects: Row[]; tasks: Row[]; materials: Row[];
   inventory: Row[]; requests: Row[]; requestItems: Row[]; history: Row[];
+  deliveries: Row[]; deliveryItems: Row[]; returns: Row[]; returnItems: Row[];
+  usageReports: Row[]; usageReportItems: Row[]; requestBalances: Row[];
   approvals: Row[]; documents: Row[]; diagrams: Row[]; areas: Row[];
   warehouses: Row[]; members: Row[]; profiles: Row[]; assignees: Row[];
   summaries: Row[]; roles: Row[]; notifications: Row[]; errors: string[];
